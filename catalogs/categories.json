@@ -1,0 +1,811 @@
+[
+  {
+    "id": "84add49b-3530-49c6-b2cb-83e1a00ff84d",
+    "name": "📺 Prime Video Ad-Free"
+  },
+  {
+    "id": "c1a88e5a-6dae-4f1a-8c5e-81ef022e59c6",
+    "name": "🍎 Apple One Premier"
+  },
+  {
+    "id": "b1b7b9d3-b7ac-4797-9853-782087f679a1",
+    "name": "🧭 Garmin"
+  },
+  {
+    "id": "d6389dd0-1789-403d-b0ab-97f47fbccec8",
+    "name": "🎧 Apple Music"
+  },
+  {
+    "id": "cf0a5ad2-801d-444c-aff2-37988893a7e7",
+    "name": "Daily Wire"
+  },
+  {
+    "id": "d464f65f-fa0e-49d4-bc30-8881e2e509d6",
+    "name": "apli"
+  },
+  {
+    "id": "0e095b82-f059-4b29-9afc-1cb35b123dbf",
+    "name": "📺 Apple+ TV"
+  },
+  {
+    "id": "93b39017-d1f1-4d13-aa89-d9d9630a69d2",
+    "name": "⛪️ Church Offering"
+  },
+  {
+    "id": "0e24ab78-6d8c-4b66-b026-72ea1bdfeb6b",
+    "name": "🏠 Mortgage"
+  },
+  {
+    "id": "8ebdb8cb-9c3b-489e-a090-7c105e5182aa",
+    "name": "💽 Google Storage"
+  },
+  {
+    "id": "cf4ac16e-a9d3-4420-91fc-ea9cefbef175",
+    "name": "📺 YouTube Premium "
+  },
+  {
+    "id": "e7bb13ba-222d-49e7-976f-f4d13c237b1d",
+    "name": "📚 Kindle Unlimited"
+  },
+  {
+    "id": "b8e3aa7b-b28a-485d-9ab3-b07cc61795ef",
+    "name": "Sentra Loan (5) ⚡️"
+  },
+  {
+    "id": "d9e5a7a1-e476-4a16-8996-5ac0057b27a9",
+    "name": "🚙 Honda Loan"
+  },
+  {
+    "id": "1c8420d1-8895-4b28-902f-f15b04340489",
+    "name": "🚙 Kia Seltos Loan"
+  },
+  {
+    "id": "fbeea827-213b-4fdb-8a50-e8b441a77d9c",
+    "name": "Kia Loan (10) ⚡️"
+  },
+  {
+    "id": "0f39fbf8-171c-44c8-ac0e-81933969273f",
+    "name": "🍿 Netflix"
+  },
+  {
+    "id": "8d1f1acd-7747-46e8-a795-ca8bbf7d2b52",
+    "name": "👨🏻‍💻 Xfinity"
+  },
+  {
+    "id": "352d643d-acbe-451d-9bf9-3a1079ccef63",
+    "name": "🏋🏻‍♀️ Gym Membership"
+  },
+  {
+    "id": "5eafd549-1e3c-4744-bc99-90c27092f49a",
+    "name": "🏃🏼‍♂️ Stryd Membership"
+  },
+  {
+    "id": "6c285df3-4473-4481-9055-f5be68d50946",
+    "name": "⚡️ ComEd"
+  },
+  {
+    "id": "5b231880-e90d-438a-8cc6-ca627f5505ac",
+    "name": "🎶 Spotify"
+  },
+  {
+    "id": "529132d9-1d8a-46ad-bfb4-b99ef6f3af20",
+    "name": "🧑‍💻 Apple Cloud"
+  },
+  {
+    "id": "09e01fee-cee1-4f0b-b98d-e644b712f7a8",
+    "name": "✍🏻  Auto Insurance"
+  },
+  {
+    "id": "7e34bdc6-d02f-4b2a-b70e-b529a4365a6c",
+    "name": "🔥 Nicor"
+  },
+  {
+    "id": "654a8d3d-3330-40e1-9b83-36ea64672b24",
+    "name": "🚆 Train Station Parking"
+  },
+  {
+    "id": "d83b7475-a25e-4cb9-a671-16ab86042781",
+    "name": "Zwift (20) ⚡️"
+  },
+  {
+    "id": "5386df2f-ef6c-4084-b762-6bb54a7ea355",
+    "name": "🐭 Disney+"
+  },
+  {
+    "id": "9cc7e73d-ccd3-47a2-9e9d-dc69f8031f90",
+    "name": "💨 Just In Time H/C"
+  },
+  {
+    "id": "9d6f874b-fb32-45ae-bbe8-902c9366396b",
+    "name": "✍🏻 Life Insurance - Regina"
+  },
+  {
+    "id": "b6709c34-ac78-49e6-af45-e20293d2cf77",
+    "name": "✍🏻 Life Insurance - David"
+  },
+  {
+    "id": "f7238a75-80ef-4e0f-8b7e-2cac39ac6cd7",
+    "name": "📺 YouTube TV"
+  },
+  {
+    "id": "e161fffc-b700-4b76-93f6-1b2462008ea8",
+    "name": "🤚🏽 Massages"
+  },
+  {
+    "id": "f12cf5e9-4657-4847-be34-728870f23fad",
+    "name": "📱 Cell",
+    "abbreviation": "cell"
+  },
+  {
+    "id": "a20039fe-abb7-44ef-b352-970943ef4288",
+    "name": "📺 Philo"
+  },
+  {
+    "id": "35933cbc-af88-41cc-bfa7-f9046ca990ca",
+    "name": "✍🏻 Home Insurance"
+  },
+  {
+    "id": "d8c6840e-0c76-4e68-8c24-331f9c6aedcb",
+    "name": "💧Water"
+  },
+  {
+    "id": "183a9bff-dc5c-40a5-af48-5f3dac6d44ef",
+    "name": "🗑 Garbage Cart Rental"
+  },
+  {
+    "id": "2c6ee5dd-81f9-4a6c-8798-a152f7119b80",
+    "name": "🚽 Sewer"
+  },
+  {
+    "id": "c1a06a0b-8001-4642-bd6f-4b4aa6aee4a0",
+    "name": "Strava"
+  },
+  {
+    "id": "b61bb031-773a-49b5-b4db-967c58a5797e",
+    "name": "Epoch Times"
+  },
+  {
+    "id": "fede4015-8b1b-4038-a755-2c198db9520a",
+    "name": "Daily Wire"
+  },
+  {
+    "id": "27ae97c8-f50f-4519-a765-e35bdc5b87b0",
+    "name": "📆 Fantastical (Flexibits)"
+  },
+  {
+    "id": "a43e964a-d85c-47ea-954e-6704e8dffdee",
+    "name": "🐶 Furbo Nanny Cam"
+  },
+  {
+    "id": "ad27f51c-93cb-4a33-8110-1f40e7476d1c",
+    "name": "⛺️ Outside"
+  },
+  {
+    "id": "bf01ecbf-5046-4444-9e54-93a7197cb037",
+    "name": "🤴🏼Twitchy Townhall"
+  },
+  {
+    "id": "468f5ee6-4dbd-484f-80e4-b973f4a3e8a5",
+    "name": "🔏 Day One Journal"
+  },
+  {
+    "id": "b22f3ad6-818e-4674-bdec-c30a8d09b152",
+    "name": "👮🏻‍♀️Norton 360 Deluxe"
+  },
+  {
+    "id": "129abdac-6223-4feb-89e0-df63b7c92d8d",
+    "name": "☂️ Umbrella Insurance"
+  },
+  {
+    "id": "0d6c8307-a7c2-47e7-9f36-ab21e9cb0186",
+    "name": "🐄 Remember the Milk"
+  },
+  {
+    "id": "35a0c673-804f-4d08-9180-4b23693c0133",
+    "name": "🛒 Amazon Prime"
+  },
+  {
+    "id": "2ab1d495-ca7b-48a0-aaa4-b4730aa3fadc",
+    "name": "👀 Nest Aware"
+  },
+  {
+    "id": "168e137a-5e35-44f6-9748-7608941e9133",
+    "name": "🏘 Colony Lakes Dues"
+  },
+  {
+    "id": "325f51dc-55dc-4def-82b9-4680cf0b7966",
+    "name": "💽 iDrive"
+  },
+  {
+    "id": "4f865dd7-5385-4f37-acc9-aa173f4a01cb",
+    "name": "🔑 LastPass"
+  },
+  {
+    "id": "f7b2bdc9-8f72-4c77-93fc-b94b313c203d",
+    "name": "📖 WordPress"
+  },
+  {
+    "id": "c59ab2c9-fd91-4652-87c2-78360451f140",
+    "name": "👮🏻‍♀️ AVG Anti-Virus "
+  },
+  {
+    "id": "ada2c940-2459-4426-aa2d-4a1f0252069f",
+    "name": "🐘 Evernote"
+  },
+  {
+    "id": "f9c0157e-12df-4edf-a4a5-e306bf8b0f67",
+    "name": "🏁 AAA Membership"
+  },
+  {
+    "id": "982339de-86ce-4a00-99fb-39a8b82bd36f",
+    "name": "🏠 Real Estate Tax"
+  },
+  {
+    "id": "ac1f3efc-8b55-4e71-989b-edb167ee7872",
+    "name": "✍🏻 Life Insurance - Ryan"
+  },
+  {
+    "id": "c4c9ccb7-e561-463e-b2bf-343d7aa1d54d",
+    "name": "💰You Need A Budget"
+  },
+  {
+    "id": "0e0bf550-8982-477c-9b0b-a3ad9a0424eb",
+    "name": "🚙 Auto Registration"
+  },
+  {
+    "id": "276c8224-7efb-46ba-a73e-e54fe5b148b7",
+    "name": "🏃🏻‍♂️ Active Advantage"
+  },
+  {
+    "id": "187f80ba-1d88-4852-af1f-46ea7251736d",
+    "name": "🍎 myFitnessPal"
+  },
+  {
+    "id": "7643e017-7281-49fa-9c57-fb5a09b0edae",
+    "name": "🐕 Pet Insurance"
+  },
+  {
+    "id": "32ed6d8b-1613-41ce-b0de-71d033f2ad1d",
+    "name": "🏊‍♂️ USA Triathlon Membership"
+  },
+  {
+    "id": "a1f19f9c-3102-4f92-91e1-cc2fcd8e90af",
+    "name": "🧑🏻‍💻 MS Office 365"
+  },
+  {
+    "id": "0e580e44-c4e7-41c7-947d-87eaf96da614",
+    "name": "🗻 TrainingPeaks"
+  },
+  {
+    "id": "dbb598c7-47a7-4e11-a345-32f8dc97239e",
+    "name": "🧑🏻‍💻 WebStorm"
+  },
+  {
+    "id": "ca1b7b4e-9a52-4d69-9b90-e1565f7a4c06",
+    "name": "🎞 Flickr"
+  },
+  {
+    "id": "0e36fbd4-c3ff-4fcd-9656-2703b092cb61",
+    "name": "🏋🏻‍♀️ Athletic Training"
+  },
+  {
+    "id": "4131cf5c-7a13-4630-9036-20a302505fee",
+    "name": "🧑🏻‍💻 Web Services"
+  },
+  {
+    "id": "1c02b281-4657-4dd1-92ff-535e9b3dee1d",
+    "name": "💻 Work Tech"
+  },
+  {
+    "id": "21081ce8-1ce3-4325-b73e-d90e753f56cd",
+    "name": "⛪️ Church Misc Donations"
+  },
+  {
+    "id": "c043d658-9dee-4d2f-996a-5c41ea9518cb",
+    "name": "🧽 Cleaning Supplies",
+    "abbreviation": "cls"
+  },
+  {
+    "id": "6f886518-3d89-469b-a8f3-71aebcd74e72",
+    "name": "💄 Cosmetics"
+  },
+  {
+    "id": "a2587298-0da5-4e7a-a5fb-5124a0854777",
+    "name": "🥺 Donations Not Deductible"
+  },
+  {
+    "id": "8314c0a9-1e5c-4d8d-9013-6aed85a0c326",
+    "name": "🎗 Donations to Charity",
+    "abbreviation": "donc"
+  },
+  {
+    "id": "d50b5273-a483-4f8d-bbac-1c25f64c57ea",
+    "name": "👨🏻‍🍳 Eating Out",
+    "abbreviation": "e"
+  },
+  {
+    "id": "4574d5bb-d824-4555-a630-80ff51330ee9",
+    "name": "🥖 Groceries",
+    "abbreviation": "g"
+  },
+  {
+    "id": "429ec401-8e78-488e-a05e-99bbae2323dc",
+    "name": "🍪 Snacks",
+    "abbreviation": "s"
+  },
+  {
+    "id": "9988718f-e070-4ac6-bda4-6e9fca4f8297",
+    "name": "⛽️ Gasoline"
+  },
+  {
+    "id": "c3a51632-03b5-43b9-b9f7-8b685169dec7",
+    "name": "💈 Haircuts & Hair Supplies",
+    "abbreviation": "hc"
+  },
+  {
+    "id": "546efa16-8b0a-4f2a-a434-21a8f27955fe",
+    "name": "🛣 Highway Tolls"
+  },
+  {
+    "id": "03810c0d-bd88-489c-93d8-21d04f84fcae",
+    "name": "🧋Isagenix"
+  },
+  {
+    "id": "86a68f31-6bc8-4755-8a19-2ee5a6e6f912",
+    "name": "🧺 Laundry",
+    "abbreviation": "l"
+  },
+  {
+    "id": "2725e90a-9ce2-435d-bc0d-b53aed0b5eba",
+    "name": "💊 OTC Medical",
+    "abbreviation": "otc"
+  },
+  {
+    "id": "7ff0664f-9341-461c-bdd4-e40b4b631389",
+    "name": "🧻 Paper, Plastic & Foil",
+    "abbreviation": "p"
+  },
+  {
+    "id": "3e0b32f3-dd47-41bb-a0a0-cbacdb8371fd",
+    "name": "🧴Personal Care",
+    "abbreviation": "pc"
+  },
+  {
+    "id": "516f3cf8-6e01-474c-a063-66259ebef130",
+    "name": "🦴 Pet Food",
+    "abbreviation": "pf"
+  },
+  {
+    "id": "0d656a5f-4836-4b0c-a345-7f2f1041ef62",
+    "name": "✂ Pet Grooming"
+  },
+  {
+    "id": "7c6a0dcb-6765-4015-8144-736aaafb5dda",
+    "name": "💊 Pet Medicine",
+    "abbreviation": "pm"
+  },
+  {
+    "id": "426cb0ff-1ea4-4089-8371-7e055d6e9fd3",
+    "name": "🦮 Pet Supplies",
+    "abbreviation": "ps"
+  },
+  {
+    "id": "fa18d25b-d13a-4774-bccb-96474905658a",
+    "name": "🗑 Trash Stickers",
+    "abbreviation": "trs"
+  },
+  {
+    "id": "161069cc-f769-4987-a098-e5191e48e595",
+    "name": "💡 Technology Supplies",
+    "abbreviation": "ts"
+  },
+  {
+    "id": "804bce02-fd43-4c33-a10a-0d602471e804",
+    "name": "🏪 Department Store",
+    "abbreviation": "ds"
+  },
+  {
+    "id": "a35faf5c-048a-45d6-87f2-017c1de8085a",
+    "name": "💸 Tax Due"
+  },
+  {
+    "id": "951f32c4-9f61-4023-a0e8-3d3b8df6ae08",
+    "name": "⚖️ Legal"
+  },
+  {
+    "id": "f07abe7e-246f-43f3-87ba-ad8717eb6942",
+    "name": "🚙 Auto Maintenance",
+    "abbreviation": "am"
+  },
+  {
+    "id": "d3112624-aa19-414f-9228-b82d5bef1d32",
+    "name": "🚙 Auto Repairs"
+  },
+  {
+    "id": "8a08f622-61c6-4d4d-b42d-1fce2ff4e738",
+    "name": "🏦 Bank Expenses"
+  },
+  {
+    "id": "885e6e4f-cc35-4a43-980a-b09539e838ec",
+    "name": "👔 Clothing Maintenance",
+    "abbreviation": "cm"
+  },
+  {
+    "id": "23ab775f-17a6-4649-93bd-d1ebba774e94",
+    "name": "Computer Support"
+  },
+  {
+    "id": "c086c3c4-4c5d-445f-8175-73f7e5f8da15",
+    "name": "💲eBay Fees"
+  },
+  {
+    "id": "04b35e37-42fd-4d56-8dfc-8fef4aaf9852",
+    "name": "🎁 Gifts",
+    "abbreviation": "gf"
+  },
+  {
+    "id": "3a7afdc6-b095-4027-81e7-351e656b3065",
+    "name": "⛲️ Home Improvements"
+  },
+  {
+    "id": "c7b0d983-560a-4ace-92fd-c6eeb18bd6d8",
+    "name": "🔨 Home Maintenance"
+  },
+  {
+    "id": "c386fc0b-5c6a-4d84-bc1c-d8624b6df53c",
+    "name": "🏚 Home Repairs"
+  },
+  {
+    "id": "bf9043df-fa21-43b2-a5f6-d22b4b88437b",
+    "name": "🏨 Hotels & Camping"
+  },
+  {
+    "id": "ada5ea79-a818-488b-ac57-620cb37c6ec2",
+    "name": "🪠 Household Miscellaneous",
+    "abbreviation": "hm"
+  },
+  {
+    "id": "4d3b3355-a8d2-4774-936a-ab203900b9ef",
+    "name": "🖇 Office Supplies",
+    "abbreviation": "os"
+  },
+  {
+    "id": "13831247-c182-4e88-9650-4dc08a8e8ee5",
+    "name": "🌷 Lawn & Landscaping"
+  },
+  {
+    "id": "ec233f82-0515-48c1-a49a-e4cada697bae",
+    "name": "🛂 License, Passport & ID"
+  },
+  {
+    "id": "d19de7b7-15ae-40ec-aa9b-dc72589da58e",
+    "name": "🔮 Miscellaneous",
+    "abbreviation": "misc"
+  },
+  {
+    "id": "9474545f-f3f7-4713-b400-004baf94e726",
+    "name": "🛠️ Misc. Repairs & Maintenance",
+    "abbreviation": "mrm"
+  },
+  {
+    "id": "b4af8f7e-2375-4175-a3b8-9eb4124d6046",
+    "name": "🦷 OOP Dental"
+  },
+  {
+    "id": "191efa29-4f12-4256-a143-e97970e2b9b9",
+    "name": "🦻🏻 OOP Hearing"
+  },
+  {
+    "id": "d7a64aad-a486-4cef-b249-451534b5334b",
+    "name": "🩺 OOP Medical"
+  },
+  {
+    "id": "7beb7200-2fcd-41ed-92c2-3531a2075c31",
+    "name": "👓 OOP Vision"
+  },
+  {
+    "id": "a4ea3e4f-0d50-4587-b3c8-e13c55b87040",
+    "name": "📬 Postage & Shipping",
+    "abbreviation": "post"
+  },
+  {
+    "id": "28595f0b-3003-439f-9d2e-2e39e4a0a34f",
+    "name": "🎓 Education",
+    "abbreviation": "ed"
+  },
+  {
+    "id": "88bb33db-b82a-43f3-b147-4f25926c0000",
+    "name": "🛶 Recreation Activities"
+  },
+  {
+    "id": "317c3913-1ecd-4744-afb7-97e14e4cd478",
+    "name": "🏅Race Registrations"
+  },
+  {
+    "id": "e11d13ce-3ebc-4348-bc80-92fee03737ac",
+    "name": "🧃 Recreation Supplies",
+    "abbreviation": "rs"
+  },
+  {
+    "id": "fcec2412-424c-48d3-9387-caab8278f6c9",
+    "name": "🅿️ Parking for Work"
+  },
+  {
+    "id": "f6fff0f5-3068-417d-a34b-91c3159fe071",
+    "name": "🅿️ Parking-General"
+  },
+  {
+    "id": "df485c9f-b317-4199-855d-b0f2ec77d088",
+    "name": "🐶 Pet Boarding"
+  },
+  {
+    "id": "b9bfbb2e-7299-45e9-86a1-7bec514edcaa",
+    "name": "🔩 Shop Supplies",
+    "abbreviation": "ss"
+  },
+  {
+    "id": "ff577906-81e6-4218-8396-dab5ad6daa64",
+    "name": "🍿 Shows",
+    "abbreviation": "shw"
+  },
+  {
+    "id": "b0dcdac1-0d27-468e-83b7-8652543611f9",
+    "name": "💸 Tax Preparation",
+    "abbreviation": "tp"
+  },
+  {
+    "id": "b818639e-5e02-4297-a66c-ae5d4c8477f4",
+    "name": "✈️ Transportation"
+  },
+  {
+    "id": "263c2ab9-a342-48ad-a6d9-e357cc20c358",
+    "name": "🧑🏻‍⚕️ Vet"
+  },
+  {
+    "id": "a6902547-79ef-455e-8156-57c601da965d",
+    "name": "🗄 Work Expenses",
+    "abbreviation": "wp"
+  },
+  {
+    "id": "98527823-7d9d-47a6-aff3-3dd0dc465f0f",
+    "name": "💲 Federal Income Tax Payment"
+  },
+  {
+    "id": "e21c134f-1eca-4a54-8735-398b886787dc",
+    "name": "💲 State Tax Payment"
+  },
+  {
+    "id": "757746d7-675d-418c-83de-4d4eb13ce10a",
+    "name": "🎛 Appliances",
+    "abbreviation": "app"
+  },
+  {
+    "id": "9ddec3b6-c0f3-4783-af98-6c6027fd8d3b",
+    "name": "🎲 Auto Accessories",
+    "abbreviation": "aa"
+  },
+  {
+    "id": "be44c299-d1e6-483c-8702-44543a7b8949",
+    "name": "📚 Books",
+    "abbreviation": "bk"
+  },
+  {
+    "id": "19e00865-f93b-4404-9727-cba5a91e6c72",
+    "name": "👖Clothing",
+    "abbreviation": "c"
+  },
+  {
+    "id": "10f292b8-00fa-40c2-bd50-b1776926e5ab",
+    "name": "💍 Clothing Accessories & Jewelry",
+    "abbreviation": "ca"
+  },
+  {
+    "id": "93beaf77-4041-4a28-9053-3f73c2b1befc",
+    "name": "⌨️ Computing Hardware",
+    "abbreviation": "ch"
+  },
+  {
+    "id": "0fff1457-294c-47c6-a517-e98b7dd3bef9",
+    "name": "🍽 Housewares",
+    "abbreviation": "hw"
+  },
+  {
+    "id": "24a92697-0178-4f01-9cc2-36fc9517b99e",
+    "name": "🛋 Home Furnishings",
+    "abbreviation": "hf"
+  },
+  {
+    "id": "7678b527-9eb2-4555-90a5-a5b24cb8fd58",
+    "name": "📦 Inventory Miscellaneous",
+    "abbreviation": "im"
+  },
+  {
+    "id": "db3a368a-1eab-4ff5-8bfd-721899dee843",
+    "name": "🎞 Media",
+    "abbreviation": "med"
+  },
+  {
+    "id": "76810006-de22-485b-932a-66afc0003d19",
+    "name": "🧑🏼‍🦽Medical Durable Goods",
+    "abbreviation": "mdg"
+  },
+  {
+    "id": "0e88e82c-8594-47cd-b6da-8db1649a5b64",
+    "name": "🐕 Pet Accessories",
+    "abbreviation": "pa"
+  },
+  {
+    "id": "7aecdd72-f8a4-4611-8938-99efd4096c5d",
+    "name": "🐕 Pet Inventory",
+    "abbreviation": "pi"
+  },
+  {
+    "id": "85a5e6df-c308-42ce-8aac-c4c4c2bf413c",
+    "name": "🦮 Pet Events",
+    "abbreviation": "pete"
+  },
+  {
+    "id": "76aab639-b64f-4bd9-9e39-1dc41ec77d4f",
+    "name": "📸 Photos",
+    "abbreviation": "pht"
+  },
+  {
+    "id": "e92a5a8f-e03a-4dff-97d6-4ad72e964a25",
+    "name": "🏸 Recreation Equipment",
+    "abbreviation": "re"
+  },
+  {
+    "id": "24aeb594-dd7f-482e-92f1-21a2d2a82ac7",
+    "name": "💾 Software Purchase",
+    "abbreviation": "sft"
+  },
+  {
+    "id": "c995ce87-6461-47fe-9825-c051f32d569b",
+    "name": "🧰 Tools",
+    "abbreviation": "tl"
+  },
+  {
+    "id": "2cca6e7f-a236-46b8-b4d6-e9fdcf3bfe9b",
+    "name": "🕹Technology Hardware",
+    "abbreviation": "th"
+  },
+  {
+    "id": "5f66b51d-e35f-49b2-94dc-6a849b2d85bd",
+    "name": "🪁Toys",
+    "abbreviation": "toy"
+  },
+  {
+    "id": "ba455152-cd5d-4e70-b54d-f12dc7504f03",
+    "name": "💼 Work Tools & Equipment",
+    "abbreviation": "wte"
+  },
+  {
+    "id": "fa94a37c-15db-4f82-bec0-9591554f0603",
+    "name": "Life Insurance"
+  },
+  {
+    "id": "804939ed-5c61-49f3-9aa1-778f1b2d0be4",
+    "name": "Music Lessons"
+  },
+  {
+    "id": "38497f8c-bc78-4d17-9499-a9525b0dcf0f",
+    "name": "Performance Expenses",
+    "abbreviation": "prfe"
+  },
+  {
+    "id": "9dd8f10a-5071-4ca5-a0c9-bed990215505",
+    "name": "TV Service"
+  },
+  {
+    "id": "88f7e0de-d9b9-430a-a3ac-c913a519fefe",
+    "name": "Internet"
+  },
+  {
+    "id": "c04e7f55-06cc-4ed9-a24a-26206942fd25",
+    "name": "TablePlus"
+  },
+  {
+    "id": "d0c1bafc-b4c8-4531-b03b-3356ad4fe678",
+    "name": "Inflow: Ready to Assign"
+  },
+  {
+    "id": "80a45eef-6316-4b67-9ecb-4824edda6015",
+    "name": "Deferred Income SubCategory"
+  },
+  {
+    "id": "cf209300-def3-4bfc-97a5-b869011958f6",
+    "name": "Uncategorized"
+  },
+  {
+    "id": "c92e3c1f-aee9-45ff-8b03-789bf9113d1f",
+    "name": "Barclaycard"
+  },
+  {
+    "id": "a190ea69-987e-4077-b8c3-96eea99ebf27",
+    "name": "BankAmericard"
+  },
+  {
+    "id": "e48f2672-4c08-4e07-b4ef-c743f4ee652c",
+    "name": "Firestone - David"
+  },
+  {
+    "id": "2ff43c4f-7348-42d3-9981-e7000af12cc2",
+    "name": "Firestone - Regina"
+  },
+  {
+    "id": "76575ccb-ceaa-4a1a-afbb-32d107880b91",
+    "name": "PayPal Credit"
+  },
+  {
+    "id": "6642e993-2e56-4637-88be-18c787274a78",
+    "name": "Best Buy"
+  },
+  {
+    "id": "f9f1efea-f8ec-4255-9c96-d81dd093602d",
+    "name": "Kohl's Credit"
+  },
+  {
+    "id": "fdb7e9c7-1ce5-4a95-921f-8383d0707c19",
+    "name": "JC Penney Credit"
+  },
+  {
+    "id": "5d93d67f-88d0-4c4b-878a-0bdc5c54f28c",
+    "name": "Visa Altitude Go"
+  },
+  {
+    "id": "1c0b6f73-639e-4f9b-b7ab-e9d91185999b",
+    "name": "Student Loan"
+  },
+  {
+    "id": "8a4f6e9f-0954-44d6-bce3-4c47af7f0ad4",
+    "name": "💲Ryan's Bonus"
+  },
+  {
+    "id": "0e2798e9-1272-47e6-b7b7-f265b332128e",
+    "name": "💲Regina's Expenses"
+  },
+  {
+    "id": "8a0678d1-f970-4665-9828-c36c3313c856",
+    "name": "💲David's Expenses"
+  },
+  {
+    "id": "23df5f5c-b106-401f-b813-ec146ded13eb",
+    "name": "Moving"
+  },
+  {
+    "id": "b4a5c4ed-1cb6-4d92-96fa-f395de60a61c",
+    "name": "New Car"
+  },
+  {
+    "id": "72d6b58e-7e52-4e34-8b9f-60651ef78746",
+    "name": "Future Months"
+  },
+  {
+    "id": "d06fc62a-9009-4ffa-8598-c26ff069065b",
+    "name": "👨‍💻 eBay Sales-Others"
+  },
+  {
+    "id": "5968f2ad-0d0a-4ab1-bf55-2e0683de5b1d",
+    "name": "FDIC Credit Card"
+  },
+  {
+    "id": "3df109d6-3bf1-4855-b4bf-c01e438707c7",
+    "name": "College"
+  },
+  {
+    "id": "942ce2e8-0cb1-4a52-96d2-9e87e2a69271",
+    "name": "T. Rowe Price Loan"
+  },
+  {
+    "id": "70127021-cc59-463f-9bb1-705f694e22b0",
+    "name": "$1000 Emergency Fund"
+  },
+  {
+    "id": "709d0186-8cc0-441b-93a8-ce5c040c9be4",
+    "name": "Savings"
+  },
+  {
+    "id": "0d62b28f-aca1-40b4-903a-932e28f01a4d",
+    "name": "🌴 Vacation"
+  }
+]
