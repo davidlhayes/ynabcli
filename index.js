@@ -1,4 +1,5 @@
 // main ynab commnad line
+  const readline = require('readline');
   const checkArguments = require('./lib/checkArguments');
   const showHelp = require('./lib/showHelp');
   const showArgs = require('./lib/showArgs');
@@ -9,27 +10,29 @@
   const taxTransaction = require('./lib/taxTransaction');
   const reCategorizeTransaction = require('./lib/reCategorizeTransaction');
   const totalTransaction = require('./lib/totalTransaction');
-  // const getNewTransactionDetails = require('./lib/getNewTransactionDetails');
+  const getNewTransactionDetails = require('./lib/getNewTransactionDetails');
   const getSplitTransaction = require('./lib/getSplitTransaction');
-  // const updateTransaction = require('./lib/updateTransaction');
+  const updateYnab = require('./lib/updateYnab');
   const previewResult = require('./lib/previewResult');
-  // const getApiParameters = require('./lib/getApiParameters');
-  // const dayjs = require('dayjs');
-  // const callApi = require('./lib/callApi');
+  const dayjs = require('dayjs');
 
-  // const rl = readline.createInterface({
-  //   input: process.stdin,
-  //   output: process.stdout,
-  // });
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
 
   const defaultCatchAllCategoryId = DEPARTMENT_STORE_CATEGORY_ID;
   let inputCatchAllCategoryAbbreviation;
   let catchAllCategoryId;
   let payeeInput;
   let accountInput;
+  let payeeId;
+  let accountId;
+  let payeeName;
+  let accountName;
+  let date;
 
   const args = process.argv.slice(2);
-  console.log('args:', args);
   (async () => {
     const {
       detailInput,
@@ -39,25 +42,23 @@
       needsHelp,
       needsArgs,
     } = checkArguments(args);
-    console.log('detailInput:', detailInput);
-    console.log('payeeInputName:', payeeInputName);
-    console.log('accountInputName:', accountInputName);
-    console.log('dateInput:', dateInput);
-    console.log('needsHelp:', needsHelp);
-    console.log('needsArgs:', needsArgs);
-    if (needsHelp) {
-      showHelp();
-      return;
-    } else if (needsArgs) {
-      showArgs();
-      return;
-    }
+
     const dictionaries = initializeDictionaries();
     if (!dictionaries) {
       console.error('Failed to initialize dictionaries');
       return;
     }
-    payeeInput = payeeInputName && dictionaries.payees.find(payee => payee.name === payeeInputName);
+    const { accounts, categories, payees, taxRates } = dictionaries;
+    if (needsHelp) {
+      showHelp(categories, taxRates);
+      rl.close();
+      return;
+    } else if (needsArgs) {
+      showArgs();
+      rl.close();
+      return;
+    }
+    payeeInput = payeeInputName && payees.find(payee => payee.name === payeeInputName);
     if (payeeInputName && !payeeInput) {
       console.error('Payee not found');
       return;
@@ -72,8 +73,7 @@
     } else {
       catchAllCategoryId = defaultCatchAllCategoryId;
     }
-    const splitTransaction = getSplitTransaction(detailInput, dictionaries.taxes);
-    console.log('splitTransaction:', splitTransaction);
+    const splitTransaction = getSplitTransaction(detailInput, taxRates);
     const {
       total,
       discount,
@@ -82,19 +82,37 @@
       aggregated
     } = splitTransaction;
     const existingTransaction = await getExistingTransaction(catchAllCategoryId, total);
-    console.log('existingTransaction:', existingTransaction);
-    const indexedTransaction = indexTransaction(splitTransaction, dictionaries.categories);
-    console.log('indexedTransaction:', indexedTransaction);
-    const taxedTransaction = taxTransaction(indexedTransaction, dictionaries.categories, splitTransaction.taxes);
-    console.log("taxed Transactions:\n", taxedTransaction);
-    const reCategorizedTransaction = reCategorizeTransaction(taxedTransaction, dictionaries.categories);
-    console.log("reCategorized Transactions:\n", reCategorizedTransaction);
+    if (!existingTransaction && !(payeeInputName && accountInputName && dateInput)) {
+      console.error('Existing transaction not found. Please provide payee and account.');
+      showArgs();
+      rl.close();
+      return;
+    }
+    payeeId = payeeInput ? payeeInput.id : existingTransaction?.payee_id;
+    payeeName = payeeInputName || payees.find(payee => payee.id === payeeId)?.name;
+    accountId = accountInput ? accountInput.id : existingTransaction?.account_id;
+    accountName = accountInputName || accounts.find(account => account.id === accountId)?.name;
+    date = dateInput || existingTransaction?.date || dayjs().format('YYYY-MM-DD');
+    const indexedTransaction = indexTransaction(splitTransaction, categories);
+    const taxedTransaction = taxTransaction(indexedTransaction, categories, splitTransaction.taxes);
+    const reCategorizedTransaction = reCategorizeTransaction(taxedTransaction, categories);
     const totaledTransactions = totalTransaction(reCategorizedTransaction, total, discount, giftCard);
-    console.log("totaledTransactions:\n", totaledTransactions);
-    previewResult(totaledTransactions, accountInputName, payeeInputName, dateInput, taxes);
-    // const newTransactionDetails = await getNewTransactionDetails(totaledTransactions, existingTransaction, payeeInput, accountInput, dateInput);
-    // const apiParameters = await getApiParameters(newTransactionDetails, existingTransaction, totaledTransactions);
-    // const response = await callApi(apiParameters);
-    // ask for user confirmation to update transaction and call apiFunction;
+    previewResult(totaledTransactions, total, accountName, payeeName, date, taxes);
+    const updatedTransaction = await getNewTransactionDetails(totaledTransactions, existingTransaction, payeeInput, accountInput, dateInput);
+    rl.question('Update transaction? (y/n)', async (answer) => {
+      if (answer === 'y') {
+        const response = await updateYnab(existingTransaction, updatedTransaction);
+        if (response.status === 200) {
+          console.log('Transaction updated');
+        } else {
+          console.log('response:', response);
+          console.error('Transaction not updated');
+        }
+        rl.close();
+      } else {
+        console.log('Okay. Transaction not updated');
+        rl.close();
+      }
+    });
   })();
 

@@ -20,6 +20,11 @@
         "name": "Gift Card Tax",
         "abbreviation": "gctax",
         "rate": 0.0
+      },
+      {
+        "name": "Donations Tax",
+        "abbreviation": "dtax",
+        "rate": 0.0
       }
     ]
   }

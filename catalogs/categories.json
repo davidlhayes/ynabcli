@@ -318,12 +318,15 @@
   },
   {
     "id": "a2587298-0da5-4e7a-a5fb-5124a0854777",
-    "name": "🥺 Donations Not Deductible"
+    "name": "🥺 Donations Not Deductible",
+    "abbreviation": "dnd",
+    "taxType": "dtax"
   },
   {
     "id": "8314c0a9-1e5c-4d8d-9013-6aed85a0c326",
     "name": "🎗 Donations to Charity",
-    "abbreviation": "donc"
+    "abbreviation": "donc",
+    "taxType": "dtax"
   },
   {
     "id": "d50b5273-a483-4f8d-bbac-1c25f64c57ea",
