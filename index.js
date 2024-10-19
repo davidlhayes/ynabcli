@@ -4,6 +4,7 @@
   const showHelp = require('./lib/showHelp');
   const showArgs = require('./lib/showArgs');
   const { DEPARTMENT_STORE_CATEGORY_ID } = require('./constants');
+  const showAllMatchingTransactions = require('./lib/showAllMatchingTransactions');
   const getExistingTransaction = require('./lib/getExistingTransaction');
   const initializeDictionaries = require('./lib/initializeDictionaries');
   const indexTransaction = require('./lib/indexTransaction');
@@ -41,6 +42,8 @@
       dateInput,
       needsHelp,
       needsArgs,
+      findTransactions,
+      amounts,
     } = checkArguments(args);
 
     const dictionaries = initializeDictionaries();
@@ -55,6 +58,10 @@
       return;
     } else if (needsArgs) {
       showArgs();
+      rl.close();
+      return;
+    } else if (findTransactions) {
+      const transactions = await showAllMatchingTransactions(amounts, accounts, payees, categories);
       rl.close();
       return;
     }
