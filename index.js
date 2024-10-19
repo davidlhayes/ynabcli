@@ -112,7 +112,6 @@
         if (response.status === 200) {
           console.log('Transaction updated');
         } else {
-          console.log('response:', response);
           console.error('Transaction not updated');
         }
         rl.close();
