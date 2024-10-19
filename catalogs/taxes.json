@@ -1,0 +1,26 @@
+{
+  "data": {
+    "taxes": [
+      {
+        "name": "Sales Tax",
+        "abbreviation": "tax",
+        "rate": 8.5
+      },
+      {
+        "name": "Grocery Tax",
+        "abbreviation": "gtax",
+        "rate": 1.5
+      },
+      {
+        "name": "Liquor Tax",
+        "abbreviation": "atax",
+        "rate": 2.25
+      },
+      {
+        "name": "Gift Card Tax",
+        "abbreviation": "gctax",
+        "rate": 0.0
+      }
+    ]
+  }
+}
