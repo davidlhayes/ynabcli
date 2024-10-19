@@ -1,5 +1,12 @@
 [
   {
+    "id": "f7b2bdc9-8f72-4c77-93fc-b94b313c203d",
+    "name": "Liquor, Beer & Wine",
+    "mergeCategory": "g",
+    "abbreviation": "alc",
+    "taxType": "atax"
+  },
+  {
     "id": "84add49b-3530-49c6-b2cb-83e1a00ff84d",
     "name": "📺 Prime Video Ad-Free"
   },
@@ -326,7 +333,8 @@
   {
     "id": "4574d5bb-d824-4555-a630-80ff51330ee9",
     "name": "🥖 Groceries",
-    "abbreviation": "g"
+    "abbreviation": "g",
+    "taxType": "gtax"
   },
   {
     "id": "429ec401-8e78-488e-a05e-99bbae2323dc",
@@ -444,6 +452,13 @@
     "abbreviation": "gf"
   },
   {
+    "id": "f3b3b3b3-1b3b-4b3b-8b3b-3b3b3b3b3b3b",
+    "name": "Gift Cards",
+    "abbreviation": "gcrd",
+    "mergeCategory": "gf",
+    "taxType": "gctax"
+  },
+  {
     "id": "3a7afdc6-b095-4027-81e7-351e656b3065",
     "name": "⛲️ Home Improvements"
   },
@@ -471,7 +486,8 @@
   },
   {
     "id": "13831247-c182-4e88-9650-4dc08a8e8ee5",
-    "name": "🌷 Lawn & Landscaping"
+    "name": "🌷 Lawn & Landscaping",
+    "abbreviation": "ll"
   },
   {
     "id": "ec233f82-0515-48c1-a49a-e4cada697bae",

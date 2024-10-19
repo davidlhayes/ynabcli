@@ -2,8 +2,13 @@
 
   describe('taxTransaction', () => {
     test('should correctly calculate sales tax for a given amount', () => {
-      const amount = 1000;
-      const salesTaxRate = 1.085;
+      const indexedTransactions = [
+        { abbreviation: 'c', amount: -50000, amounts: [-35000, -15000] },
+        { abbreviation: 'hw', amount: -10000, amounts: [-1000] },
+        { abbreviation: 'g', amount: -50250, amounts: [-10250, -20000, -20000] }
+      ];
+      const salesTaxRate = 8.5;
+      const groceryTaxRate = 1.5;
       const result = taxTransaction(amount, salesTaxRate);
 
       expect(result).toBeCloseTo(1085, 2);
