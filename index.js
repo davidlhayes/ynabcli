@@ -2,6 +2,7 @@
   const readline = require('readline');
   const checkArguments = require('./lib/checkArguments');
   const showHelp = require('./lib/showHelp');
+  const updateCatalogs = require('./lib/updateCatalogs');
   const showArgs = require('./lib/showArgs');
   const { DEPARTMENT_STORE_CATEGORY_ID } = require('./constants');
   const showAllMatchingTransactions = require('./lib/showAllMatchingTransactions');
@@ -41,6 +42,7 @@
       accountInputName,
       dateInput,
       needsHelp,
+      needsUpdate,
       needsArgs,
       findTransactions,
       amounts,
@@ -54,6 +56,10 @@
     const { accounts, categories, payees, taxRates } = dictionaries;
     if (needsHelp) {
       showHelp(categories, taxRates);
+      rl.close();
+      return;
+    } else if (needsUpdate) {
+      await updateCatalogs(categories);
       rl.close();
       return;
     } else if (needsArgs) {

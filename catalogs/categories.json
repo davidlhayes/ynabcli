@@ -24,7 +24,7 @@
   },
   {
     "id": "cf0a5ad2-801d-444c-aff2-37988893a7e7",
-    "name": "Daily Wire"
+    "name": "📡 Daily Wire2"
   },
   {
     "id": "d464f65f-fa0e-49d4-bc30-8881e2e509d6",
@@ -165,15 +165,15 @@
   },
   {
     "id": "c1a06a0b-8001-4642-bd6f-4b4aa6aee4a0",
-    "name": "Strava"
+    "name": "🏅Strava"
   },
   {
     "id": "b61bb031-773a-49b5-b4db-967c58a5797e",
-    "name": "Epoch Times"
+    "name": "📰 Epoch Times"
   },
   {
     "id": "fede4015-8b1b-4038-a755-2c198db9520a",
-    "name": "Daily Wire"
+    "name": "📡 Daily Wire"
   },
   {
     "id": "27ae97c8-f50f-4519-a765-e35bdc5b87b0",
@@ -826,5 +826,9 @@
   {
     "id": "0d62b28f-aca1-40b4-903a-932e28f01a4d",
     "name": "🌴 Vacation"
+  },
+  {
+    "id": "f7b2bdc9-8f72-4c77-93fc-b94b313c203d",
+    "name": "📖 WordPress"
   }
 ]
