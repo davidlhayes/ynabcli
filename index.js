@@ -115,7 +115,7 @@ n    } = splitTransaction;
     rl.question('Update transaction? (y/n)', async (answer) => {
       if (answer === 'y') {
         const response = await updateYnab(existingTransaction, updatedTransaction);
-        if (response.status === 200) {
+        if (response.status >= 200 && response.status < 300) {
           console.log('Transaction updated');
         } else {
           console.error('Transaction not updated');
