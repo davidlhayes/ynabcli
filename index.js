@@ -92,8 +92,8 @@
       discount,
       giftCard,
       taxes,
-      aggregated
-    } = splitTransaction;
+      aggregated,
+n    } = splitTransaction;
     const existingTransaction = await getExistingTransaction(catchAllCategoryId, total);
     if (!existingTransaction && !(payeeInputName && accountInputName && dateInput)) {
       console.error('Existing transaction not found. Please provide payee and account.');
