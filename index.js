@@ -36,6 +36,11 @@
 
   const args = process.argv.slice(2);
   (async () => {
+    const argumentResponse = checkArguments(args);
+    if (argumentResponse === 'error') {
+      console.error('Error parsing arguments');
+      return;
+    }
     const {
       detailInput,
       payeeInputName,
@@ -46,7 +51,7 @@
       needsArgs,
       findTransactions,
       amounts,
-    } = checkArguments(args);
+    } = argumentResponse;
 
     const dictionaries = initializeDictionaries();
     if (!dictionaries) {
@@ -107,6 +112,7 @@ n    } = splitTransaction;
     accountName = accountInputName || accounts.find(account => account.id === accountId)?.name;
     date = dateInput || existingTransaction?.date || dayjs().format('YYYY-MM-DD');
     const indexedTransaction = indexTransaction(splitTransaction, categories);
+    if (typeof indexedTransaction === 'string') return;
     const taxedTransaction = taxTransaction(indexedTransaction, categories, splitTransaction.taxes);
     const reCategorizedTransaction = reCategorizeTransaction(taxedTransaction, categories);
     const totaledTransactions = totalTransaction(reCategorizedTransaction, total, discount, giftCard);
