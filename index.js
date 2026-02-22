@@ -45,6 +45,7 @@
       detailInput,
       payeeInputName,
       accountInputName,
+      inputCatchAllCategoryAbbreviation: inputCatchAllFromArgs,
       dateInput,
       needsHelp,
       needsUpdate,
@@ -52,6 +53,7 @@
       findTransactions,
       amounts,
     } = argumentResponse;
+    inputCatchAllCategoryAbbreviation = inputCatchAllFromArgs;
 
     const dictionaries = initializeDictionaries();
     if (!dictionaries) {
