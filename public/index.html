@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YNAB transaction</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-layout">
+    <aside class="category-sidebar" aria-label="Category shortcodes">
+      <div id="category-codes" class="category-codes" aria-label="Category shortcodes"></div>
+    </aside>
+    <main id="app" role="main" class="main-content">
+    <div id="success-summary" class="success-summary hidden" aria-live="polite"></div>
+    <!-- Step 1: Total -->
+    <section id="step-total" class="step" aria-label="Enter total">
+      <h1>Transaction total</h1>
+      <label for="input-total">Total ($)</label>
+      <input type="text" id="input-total" inputmode="decimal" placeholder="e.g. 238.34" autofocus />
+      <p class="hint">Press Enter to look up existing transaction</p>
+    </section>
+
+    <!-- Step 2: Payee, account, date (only when no existing transaction) -->
+    <section id="step-details" class="step hidden" aria-label="Payee, account, date">
+      <h1>New transaction details</h1>
+      <label for="input-payee">Payee</label>
+      <input type="text" id="input-payee" list="payee-list" placeholder="Type or select payee" />
+      <datalist id="payee-list"></datalist>
+      <label for="input-account">Account</label>
+      <select id="input-account">
+        <option value="">Select account</option>
+      </select>
+      <label for="input-date">Date</label>
+      <input type="date" id="input-date" />
+      <button type="button" id="btn-next">Next</button>
+      <p class="hint">Payee: use Arrow keys to highlight a suggestion, Enter to accept it, then Tab to Account. Enter on date or Next to continue.</p>
+    </section>
+
+    <!-- Step 3: Confirmation + detail line -->
+    <section id="step-detail-line" class="step hidden" aria-label="Detail line">
+      <h1>Split detail</h1>
+      <div id="confirmation" class="confirmation" aria-live="polite"></div>
+      <div id="confirmation-category" class="confirmation-category hidden" aria-live="polite"></div>
+      <datalist id="category-list"></datalist>
+      <div id="detail-rows" class="detail-rows" aria-label="Category and amount for each line">
+        <div class="detail-row">
+          <label class="detail-row-label" for="detail-category-0">Category</label>
+          <input type="text" id="detail-category-0" class="detail-category" list="category-list" placeholder="Type to narrow choices" autocomplete="off" aria-label="Category" />
+          <label class="detail-row-label" for="detail-amount-0">Amount ($)</label>
+          <input type="text" id="detail-amount-0" class="detail-amount" inputmode="decimal" placeholder="e.g. 10.00" aria-label="Amount" />
+        </div>
+      </div>
+      <h2 class="tax-rows-heading">Tax rates (%)</h2>
+      <div id="tax-rows" class="tax-rows" aria-label="Tax rates (percent)"></div>
+      <p class="hint">Tab: Category → Amount. Tab from amount adds another line.</p>
+      <div id="live-display" class="live-display" aria-live="polite"></div>
+      <button type="button" id="btn-submit">Update YNAB</button>
+      <p id="message" class="message" aria-live="polite"></p>
+    </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
