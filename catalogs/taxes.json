@@ -4,7 +4,7 @@
       {
         "name": "Sales Tax",
         "abbreviation": "tax",
-        "rate": 8.5
+        "rate": 7
       },
       {
         "name": "Grocery Tax",
