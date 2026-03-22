@@ -3,63 +3,155 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YNAB transaction</title>
+  <title>YNAB Transaction Splitter</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="page-layout">
-    <aside class="category-sidebar" aria-label="Category shortcodes">
-      <div id="category-codes" class="category-codes" aria-label="Category shortcodes"></div>
-    </aside>
-    <main id="app" role="main" class="main-content">
-    <div id="success-summary" class="success-summary hidden" aria-live="polite"></div>
-    <!-- Step 1: Total -->
-    <section id="step-total" class="step" aria-label="Enter total">
-      <h1>Transaction total</h1>
-      <label for="input-total">Total ($)</label>
-      <input type="text" id="input-total" inputmode="decimal" placeholder="e.g. 238.34" autofocus />
-      <p class="hint">Press Enter to look up existing transaction</p>
-    </section>
+  <main id="app" role="main" class="main-content">
+      <div class="app-shell">
+        <div class="app-card">
+          <h1 class="app-title">YNAB Transaction Splitter</h1>
 
-    <!-- Step 2: Payee, account, date (only when no existing transaction) -->
-    <section id="step-details" class="step hidden" aria-label="Payee, account, date">
-      <h1>New transaction details</h1>
-      <label for="input-payee">Payee</label>
-      <input type="text" id="input-payee" list="payee-list" placeholder="Type or select payee" />
-      <datalist id="payee-list"></datalist>
-      <label for="input-account">Account</label>
-      <select id="input-account">
-        <option value="">Select account</option>
-      </select>
-      <label for="input-date">Date</label>
-      <input type="date" id="input-date" />
-      <button type="button" id="btn-next">Next</button>
-      <p class="hint">Payee: use Arrow keys to highlight a suggestion, Enter to accept it, then Tab to Account. Enter on date or Next to continue.</p>
-    </section>
+          <div id="success-summary" class="success-summary hidden" aria-live="polite"></div>
 
-    <!-- Step 3: Confirmation + detail line -->
-    <section id="step-detail-line" class="step hidden" aria-label="Detail line">
-      <h1>Split detail</h1>
-      <div id="confirmation" class="confirmation" aria-live="polite"></div>
-      <div id="confirmation-category" class="confirmation-category hidden" aria-live="polite"></div>
-      <datalist id="category-list"></datalist>
-      <div id="detail-rows" class="detail-rows" aria-label="Category and amount for each line">
-        <div class="detail-row">
-          <label class="detail-row-label" for="detail-category-0">Category</label>
-          <input type="text" id="detail-category-0" class="detail-category" list="category-list" placeholder="Type to narrow choices" autocomplete="off" aria-label="Category" />
-          <label class="detail-row-label" for="detail-amount-0">Amount ($)</label>
-          <input type="text" id="detail-amount-0" class="detail-amount" inputmode="decimal" placeholder="e.g. 10.00" aria-label="Amount" />
+          <!-- Step 1: lookup total -->
+          <section id="step-total" class="step step-total" aria-label="Enter total">
+            <label for="input-total" class="field-label">Transaction total ($)</label>
+            <input type="text" id="input-total" inputmode="decimal" placeholder="e.g. 238.34" autofocus />
+            <p class="hint">Press Enter to look up an existing transaction.</p>
+          </section>
+
+          <hr class="section-rule" id="rule-after-total" hidden />
+
+          <!-- Steps 2–3: header row -->
+          <section id="step-header" class="step step-header hidden" aria-label="Store and payment details">
+            <div class="header-fields">
+              <div class="field-group">
+                <label for="input-payee" class="field-label">Store Name</label>
+                <input type="text" id="input-payee" list="payee-list" placeholder="Enter store name" />
+                <datalist id="payee-list"></datalist>
+              </div>
+              <div class="field-group">
+                <label for="input-account" class="field-label">Payment Account</label>
+                <select id="input-account">
+                  <option value="">Select account</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label for="input-date" class="field-label">Date</label>
+                <input type="date" id="input-date" />
+              </div>
+            </div>
+            <div id="step2-actions" class="step2-actions hidden">
+              <button type="button" id="btn-next" class="btn btn-primary">Next</button>
+            </div>
+            <div id="confirmation-wrap" class="confirmation-wrap hidden" aria-live="polite">
+              <p id="confirmation" class="confirmation"></p>
+              <p id="confirmation-category" class="confirmation-category hidden"></p>
+            </div>
+          </section>
+
+          <hr class="section-rule" id="rule-before-lines" hidden />
+
+          <!-- Step 3: line items + summary (hidden when found txn is not Department Store) -->
+          <section id="step-detail-line" class="step step-detail hidden" aria-label="Split detail">
+            <div id="split-unavailable-block" class="split-unavailable-block hidden" role="region" aria-label="Split unavailable">
+              <p class="split-unavailable-notice">
+                Line-item splitting is only available when the matched transaction is categorized as <strong>Department Store</strong> (not a split).
+              </p>
+              <button type="button" id="btn-new-transaction" class="btn btn-primary btn-new-transaction">New Transaction</button>
+            </div>
+            <div id="split-workbench">
+            <section class="tax-config-section" aria-label="Tax rate configuration">
+              <h2 class="tax-config-heading">Tax Rate Configuration</h2>
+              <label class="tax-lock-label">
+                <input type="checkbox" id="tax-lock-grocery-liquor-to-sales" checked />
+                Lock grocery and liquor tax to sales tax
+              </label>
+              <div id="tax-rows" class="tax-cards"></div>
+            </section>
+
+            <div class="detail-layout">
+              <div class="line-items-panel">
+                <div class="line-items-head" role="row">
+                  <span class="col-category">Category</span>
+                  <span class="col-qty">Qty</span>
+                  <span class="col-untaxed">Amount (Untaxed)</span>
+                  <span class="col-taxed">Amount (Taxed)</span>
+                  <span class="col-tax-type">Tax Rate Type</span>
+                  <span class="col-actions" aria-hidden="true"></span>
+                </div>
+                <div id="detail-rows" class="detail-rows" aria-label="Category and amount for each line">
+                  <div class="detail-row" data-row-index="0">
+                    <div class="detail-cell">
+                      <label class="sr-only" for="detail-category-0">Category</label>
+                      <select id="detail-category-0" class="detail-category" aria-label="Category">
+                        <option value="">Select category</option>
+                      </select>
+                    </div>
+                    <div class="detail-cell">
+                      <label class="sr-only" for="detail-qty-0">Quantity</label>
+                      <input type="number" id="detail-qty-0" class="detail-qty" min="1" step="1" value="1" aria-label="Quantity" />
+                    </div>
+                    <div class="detail-cell">
+                      <label class="sr-only" for="detail-amount-0">Amount untaxed</label>
+                      <input type="text" id="detail-amount-0" class="detail-amount" inputmode="decimal" placeholder="0.00" aria-label="Amount untaxed" />
+                    </div>
+                    <div class="detail-cell detail-cell-taxed">
+                      <span class="detail-amount-taxed" aria-hidden="true">$0.00</span>
+                    </div>
+                    <div class="detail-cell">
+                      <label class="sr-only" for="detail-tax-type-0">Tax rate type</label>
+                      <select id="detail-tax-type-0" class="detail-tax-type" aria-label="Tax rate type">
+                        <option value="regular" selected>Regular</option>
+                        <option value="grocery">Grocery</option>
+                        <option value="alcohol">Alcohol</option>
+                        <option value="none">Non-taxed</option>
+                      </select>
+                    </div>
+                    <div class="detail-cell detail-cell-delete">
+                      <button type="button" class="btn-icon btn-delete-row" aria-label="Delete row" title="Delete row">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2m-9 4v10h10V10M10 11v6M14 11v6"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <button type="button" id="btn-add-row" class="btn btn-add-row">+ Add Row</button>
+              </div>
+
+              <aside class="summary-panel" aria-label="Order summary">
+                <div class="summary-line">
+                  <span>Subtotal</span>
+                  <span id="summary-subtotal" class="summary-value">$0.00</span>
+                </div>
+                <div class="summary-line">
+                  <span>Sales Tax</span>
+                  <span id="summary-sales-tax" class="summary-value">$0.00</span>
+                </div>
+                <div class="summary-line summary-line-input">
+                  <label for="input-discount">Discount</label>
+                  <input type="text" id="input-discount" class="summary-input" inputmode="decimal" placeholder="0" />
+                </div>
+                <div class="summary-line summary-line-input">
+                  <label for="input-gift-card">Gift Card Amount</label>
+                  <input type="text" id="input-gift-card" class="summary-input" inputmode="decimal" placeholder="0" />
+                </div>
+                <div class="summary-total">
+                  <span>Total</span>
+                  <span id="summary-total" class="summary-value summary-total-value">$0.00</span>
+                </div>
+              </aside>
+            </div>
+
+            <div id="live-display" class="live-display live-display-compact" aria-live="polite"></div>
+
+            <button type="button" id="btn-submit" class="btn btn-primary btn-submit">Update YNAB</button>
+            </div>
+            <p id="message" class="message" aria-live="polite"></p>
+          </section>
         </div>
       </div>
-      <h2 class="tax-rows-heading">Tax rates (%)</h2>
-      <div id="tax-rows" class="tax-rows" aria-label="Tax rates (percent)"></div>
-      <p class="hint">Tab: Category → Amount. Tab from amount adds another line.</p>
-      <div id="live-display" class="live-display" aria-live="polite"></div>
-      <button type="button" id="btn-submit">Update YNAB</button>
-      <p id="message" class="message" aria-live="polite"></p>
-    </section>
     </main>
-  </div>
   <script src="app.js"></script>
 </body>
 </html>

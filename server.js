@@ -35,13 +35,23 @@ function getDictionaries() {
   return dictionaries;
 }
 
-// GET /api/lookup?amount=238.34
+function parseImpliedDecimalDollars(amountStr) {
+  const s = String(amountStr).trim();
+  if (s === '') return NaN;
+  if (/^\d+$/.test(s)) {
+    return Math.round((parseInt(s, 10) / 100) * 100) / 100;
+  }
+  const n = parseFloat(s.replace(/,/g, ''));
+  return Number.isNaN(n) ? NaN : Math.round(n * 100) / 100;
+}
+
+// GET /api/lookup?amount=238.34 (digits-only = cents, e.g. 1000 → $10.00)
 app.get('/api/lookup', async (req, res) => {
   const amountStr = req.query.amount;
   if (amountStr == null || amountStr === '') {
     return res.status(400).json({ error: 'amount is required' });
   }
-  const amountDollars = parseFloat(amountStr);
+  const amountDollars = parseImpliedDecimalDollars(amountStr);
   if (Number.isNaN(amountDollars)) {
     return res.status(400).json({ error: 'amount must be a number' });
   }

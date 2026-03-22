@@ -1,7 +1,7 @@
 [
   {
     "id": "f7b2bdc9-8f72-4c77-93fc-b94b313c203d",
-    "name": "Liquor, Beer & Wine",
+    "name": "📖 WordPress",
     "mergeCategory": "g",
     "abbreviation": "alc",
     "taxType": "atax"
@@ -76,7 +76,7 @@
   },
   {
     "id": "8d1f1acd-7747-46e8-a795-ca8bbf7d2b52",
-    "name": "👨🏻‍💻 Xfinity"
+    "name": "👨🏻‍💻Fiber Internet Service "
   },
   {
     "id": "352d643d-acbe-451d-9bf9-3a1079ccef63",
@@ -88,7 +88,7 @@
   },
   {
     "id": "6c285df3-4473-4481-9055-f5be68d50946",
-    "name": "⚡️ ComEd"
+    "name": "⚡️ Electric Power"
   },
   {
     "id": "5b231880-e90d-438a-8cc6-ca627f5505ac",
@@ -104,7 +104,7 @@
   },
   {
     "id": "7e34bdc6-d02f-4b2a-b70e-b529a4365a6c",
-    "name": "🔥 Nicor"
+    "name": "🔥 Natural Gas Service "
   },
   {
     "id": "654a8d3d-3330-40e1-9b83-36ea64672b24",
@@ -217,7 +217,7 @@
   },
   {
     "id": "168e137a-5e35-44f6-9748-7608941e9133",
-    "name": "🏘 Colony Lakes Dues"
+    "name": "🏡 HOA Fees"
   },
   {
     "id": "325f51dc-55dc-4def-82b9-4680cf0b7966",
@@ -293,7 +293,7 @@
   },
   {
     "id": "0e36fbd4-c3ff-4fcd-9656-2703b092cb61",
-    "name": "🏋🏻‍♀️ Athletic Training"
+    "name": "🧘‍♀️Workout Classes"
   },
   {
     "id": "4131cf5c-7a13-4630-9036-20a302505fee",
@@ -379,7 +379,7 @@
   },
   {
     "id": "3e0b32f3-dd47-41bb-a0a0-cbacdb8371fd",
-    "name": "🧴Personal Care",
+    "name": "🧴Personal Care Products",
     "abbreviation": "pc"
   },
   {
@@ -408,7 +408,7 @@
   },
   {
     "id": "161069cc-f769-4987-a098-e5191e48e595",
-    "name": "💡 Technology Supplies",
+    "name": "💡 Batteries & Lightbulbs",
     "abbreviation": "ts"
   },
   {
@@ -422,7 +422,7 @@
   },
   {
     "id": "951f32c4-9f61-4023-a0e8-3d3b8df6ae08",
-    "name": "⚖️ Legal"
+    "name": "⚖️ Legal Expenses"
   },
   {
     "id": "f07abe7e-246f-43f3-87ba-ad8717eb6942",
@@ -491,7 +491,7 @@
   },
   {
     "id": "13831247-c182-4e88-9650-4dc08a8e8ee5",
-    "name": "🌷 Lawn & Landscaping",
+    "name": "🌷 Landscaping",
     "abbreviation": "ll"
   },
   {
@@ -553,7 +553,7 @@
   },
   {
     "id": "f6fff0f5-3068-417d-a34b-91c3159fe071",
-    "name": "🅿️ Parking-General"
+    "name": "🅿️ Parking"
   },
   {
     "id": "df485c9f-b317-4199-855d-b0f2ec77d088",
@@ -607,7 +607,7 @@
   },
   {
     "id": "be44c299-d1e6-483c-8702-44543a7b8949",
-    "name": "📚 Books",
+    "name": "📚 Books & Media",
     "abbreviation": "bk"
   },
   {
@@ -692,7 +692,7 @@
   },
   {
     "id": "5f66b51d-e35f-49b2-94dc-6a849b2d85bd",
-    "name": "🪁Toys",
+    "name": "🪁Toys & Games",
     "abbreviation": "toy"
   },
   {
@@ -783,11 +783,11 @@
   },
   {
     "id": "0e2798e9-1272-47e6-b7b7-f265b332128e",
-    "name": "💲Regina's Expenses"
+    "name": "💲Regina's Cash Spending"
   },
   {
     "id": "8a0678d1-f970-4665-9828-c36c3313c856",
-    "name": "💲David's Expenses"
+    "name": "💲David's Cash Spendng"
   },
   {
     "id": "23df5f5c-b106-401f-b813-ec146ded13eb",
@@ -799,7 +799,7 @@
   },
   {
     "id": "72d6b58e-7e52-4e34-8b9f-60651ef78746",
-    "name": "Future Months"
+    "name": "🔮 Future Months"
   },
   {
     "id": "d06fc62a-9009-4ffa-8598-c26ff069065b",
@@ -832,5 +832,137 @@
   {
     "id": "f7b2bdc9-8f72-4c77-93fc-b94b313c203d",
     "name": "📖 WordPress"
+  },
+  {
+    "id": "64e8820a-f8d5-455b-93db-7641aa86b7d9",
+    "name": "🖼️ Lawn Care "
+  },
+  {
+    "id": "fa55e879-ebc8-4045-b22e-03c225718867",
+    "name": " 🎄Christmas Decorations "
+  },
+  {
+    "id": "e1bc7269-460a-45e4-a242-5a523e279cd1",
+    "name": "💧City Services"
+  },
+  {
+    "id": "0cdf0a9b-ee8a-4e05-85d6-367b6a04e492",
+    "name": "👮‍♂️ ADT Security "
+  },
+  {
+    "id": "b0a4e973-46f4-4a0f-8c86-bf3df3009583",
+    "name": "Dental Insurance"
+  },
+  {
+    "id": "f50de30b-1d3b-4255-97e5-aa36914a21ca",
+    "name": "Claude"
+  },
+  {
+    "id": "61dc2371-71f1-4935-ae50-5ca943c559bf",
+    "name": "Wunderground "
+  },
+  {
+    "id": "25f9817e-79a5-402b-8068-a29ca25f90c4",
+    "name": "AppleCare One"
+  },
+  {
+    "id": "9afe09d0-878b-4c55-8158-57fb94797bf2",
+    "name": "📰 Ground News"
+  },
+  {
+    "id": "924564cf-a786-4dd7-8c5a-a7a2c671aa21",
+    "name": "Calm"
+  },
+  {
+    "id": "c24c0e70-2981-400d-97f5-39c9f63297b5",
+    "name": "📰 Breitbart"
+  },
+  {
+    "id": "6be9bcf0-7fa0-4a25-82c2-95f80619e5dd",
+    "name": "✔️ Todoist"
+  },
+  {
+    "id": "1233f172-df16-4fe0-a51e-614a0928ad88",
+    "name": "Audible"
+  },
+  {
+    "id": "14f16fcc-6173-4b28-aaec-d815e418674d",
+    "name": "🪄Cursor AI"
+  },
+  {
+    "id": "e2bf8cae-3f0e-496c-8888-9d32e271da08",
+    "name": "🍎 Other Subscriptions "
+  },
+  {
+    "id": "861b7fdf-a8d2-4388-89bc-198c2a04d78b",
+    "name": "🗣️ ChatGPT"
+  },
+  {
+    "id": "8a2c247d-5d2b-4f2d-813c-4f50b69dc694",
+    "name": "👟 Athletic Clothing"
+  },
+  {
+    "id": "28f2c278-cc4f-4f26-bac3-9b6e1c9ae611",
+    "name": "🏊‍♀️ Triathlon Coaching"
+  },
+  {
+    "id": "655151a5-8a4a-41f4-92b0-93c0e0db62f6",
+    "name": "Pet License"
+  },
+  {
+    "id": "ee4aa802-59b0-42fe-af89-e00d762464a3",
+    "name": "Kohl's Rewards Visa"
+  },
+  {
+    "id": "8de9d57f-18d2-454e-afa6-9f73b0114054",
+    "name": "📈 To Invest"
+  },
+  {
+    "id": "30d83283-49ad-4448-a89c-61701cc658ae",
+    "name": "📺  Angel Network"
+  },
+  {
+    "id": "36d73cce-0c2b-4d26-82f5-e19c7688b145",
+    "name": "🏠 Carpet"
+  },
+  {
+    "id": "20bd288e-20ce-4467-aaf4-defeddc27544",
+    "name": "RB ➡️ Carpet"
+  },
+  {
+    "id": "52492aee-4a00-4164-974b-f956e0e49cca",
+    "name": "🏡 New Home"
+  },
+  {
+    "id": "acb49d8d-8c6e-431a-a0d2-7d03ce4e462e",
+    "name": "🏠 Paint"
+  },
+  {
+    "id": "06d9f8ae-7e4d-4bd4-bc54-a6b1d40b81e4",
+    "name": "RB ➡️ Mortgage in Sep"
+  },
+  {
+    "id": "483a9132-3abd-4a35-a1c9-b01b6f50ca92",
+    "name": "RB ➡️ R First + Last"
+  },
+  {
+    "id": "4dc2267d-1f18-4100-809b-7e856b5a5bd6",
+    "name": "RB ➡️ R Furnishings"
+  },
+  {
+    "id": "f2fbc58f-7345-4a74-8a8c-06a42e3a1e2b",
+    "name": "RB ➡️ R Moving Truck"
+  },
+  {
+    "id": "7398d975-27a2-45de-9e51-ad5263c56f78",
+    "name": "RB ➡️ R Security Deposit"
+  },
+  {
+    "id": "306b36c4-cd11-4601-a97d-31b979dc4043",
+    "name": "RB ➡️ R Utility Deposit"
+  },
+  {
+    "id": "814f9fe1-1f1d-4746-8893-68f58de6006a",
+    "name": "RB ➡️ Uncategorized"
   }
 ]
