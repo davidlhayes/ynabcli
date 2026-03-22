@@ -195,9 +195,17 @@
       const n = normalizedCategoryOptionTextForPrefix(o.text).replace(/\s+/g, ' ');
       return n.length > 0 && n.startsWith(pl);
     });
-    candidates.sort((a, b) =>
-      a.text.localeCompare(b.text, undefined, { sensitivity: 'base' })
-    );
+    // Prefer exact normalized match, then shorter names (so "Clothing" wins over "Clothing Maintenance"
+    // for prefix "cl"), then alphabetical tie-break.
+    candidates.sort((a, b) => {
+      const na = normalizedCategoryOptionTextForPrefix(a.text).replace(/\s+/g, ' ');
+      const nb = normalizedCategoryOptionTextForPrefix(b.text).replace(/\s+/g, ' ');
+      const exactA = na === pl;
+      const exactB = nb === pl;
+      if (exactA !== exactB) return exactA ? -1 : 1;
+      if (na.length !== nb.length) return na.length - nb.length;
+      return a.text.localeCompare(b.text, undefined, { sensitivity: 'base' });
+    });
     return candidates[0] || null;
   }
 
