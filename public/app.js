@@ -146,11 +146,68 @@
     return byAbbrev ? byAbbrev.abbreviation : '';
   }
 
+  /** Map catalog tax abbreviation (taxes.json) to split-row tax type select value. */
+  function catalogTaxAbbrevToDetailTaxType(abbrev) {
+    if (!abbrev || typeof abbrev !== 'string') return 'regular';
+    const m = {
+      tax: 'regular',
+      gtax: 'grocery',
+      atax: 'alcohol',
+      gctax: 'none',
+      dtax: 'none',
+    };
+    return m[abbrev.toLowerCase()] || 'regular';
+  }
+
+  function nfcTrim(s) {
+    if (s == null || typeof s !== 'string') return '';
+    const t = s.trim();
+    return typeof t.normalize === 'function' ? t.normalize('NFC') : t;
+  }
+
+  /** Resolve catalog row from the category <select> value (name may differ by Unicode normalization). */
+  function resolveCategoryFromSelectValue(selectValue) {
+    const list = state.catalogs.categories || [];
+    if (!selectValue) return null;
+    let cat = list.find((c) => c.name === selectValue);
+    if (cat) return cat;
+    const target = nfcTrim(selectValue);
+    cat = list.find((c) => c.name && nfcTrim(c.name) === target);
+    if (cat) return cat;
+    const abbrev = getAbbrevFromCategoryInput(selectValue);
+    if (!abbrev) return null;
+    return list.find((c) => c.abbreviation && c.abbreviation.toLowerCase() === abbrev.toLowerCase()) || null;
+  }
+
+  /** Set row tax type from selected category's catalog taxType (sales tax when absent). */
+  function applyCatalogTaxTypeToRow(rowEl) {
+    const catSel = rowEl.querySelector('.detail-category');
+    const taxSel = rowEl.querySelector('.detail-tax-type');
+    if (!catSel || !taxSel) return;
+    const name = catSel.value;
+    if (!name) {
+      taxSel.value = 'regular';
+      return;
+    }
+    const selectedOption = catSel.options && catSel.selectedIndex >= 0 ? catSel.options[catSel.selectedIndex] : null;
+    const optionTaxType = selectedOption && selectedOption.dataset ? selectedOption.dataset.taxType : '';
+    if (optionTaxType) {
+      taxSel.value = catalogTaxAbbrevToDetailTaxType(optionTaxType);
+      return;
+    }
+    const cat = resolveCategoryFromSelectValue(name);
+    if (cat && cat.taxType) {
+      taxSel.value = catalogTaxAbbrevToDetailTaxType(cat.taxType);
+    } else {
+      taxSel.value = 'regular';
+    }
+  }
+
   function populateCategorySelects() {
     const optionsHtml = ['<option value="">Select category</option>']
       .concat(
         getCategoriesWithAbbrev().map(
-          (c) => '<option value="' + escapeHtml(c.name) + '">' + escapeHtml(c.name) + '</option>'
+          (c) => '<option value="' + escapeHtml(c.name) + '" data-abbreviation="' + escapeHtml(c.abbreviation || '') + '" data-tax-type="' + escapeHtml(c.taxType || '') + '">' + escapeHtml(c.name) + '</option>'
         )
       )
       .join('');
@@ -305,6 +362,58 @@
     return roundMoney2(a * qq);
   }
 
+  /** Match lib/taxTransaction: 10 millicent rounding on negative outflow amounts. */
+  function taxedDollarsFromUntaxed(u, r) {
+    const rate = Number(r) || 0;
+    if (Number.isNaN(u) || u === 0) return 0;
+    const milli = -Math.round(u * 1000);
+    const taxedMilli = 10 * Math.round((1 + rate / 100) * milli / 10);
+    return roundMoney2(-taxedMilli / 1000);
+  }
+
+  /** Inverse of taxedDollarsFromUntaxed for remainder untaxed given target taxed dollars. */
+  function untaxedDollarsFromTaxed(taxedDollars, r) {
+    const rate = Number(r) || 0;
+    if (Number.isNaN(taxedDollars) || taxedDollars <= 0) return 0;
+    let u = taxedDollars / (1 + rate / 100);
+    u = roundMoney2(u);
+    for (let i = 0; i < 10; i += 1) {
+      const t = taxedDollarsFromUntaxed(u, r);
+      const diff = roundMoney2(taxedDollars - t);
+      if (Math.abs(diff) < 0.005) return roundMoney2(u);
+      u = roundMoney2(u + diff / (1 + rate / 100));
+    }
+    return roundMoney2(u);
+  }
+
+  function getEffectiveTaxRatePercentForRow(rowEl) {
+    syncGroceryLiquorRatesFromSales();
+    const catSel = rowEl.querySelector('.detail-category');
+    const name = catSel && catSel.value;
+    const cat = name ? resolveCategoryFromSelectValue(name) : null;
+    const abbr = cat && cat.taxType ? String(cat.taxType).toLowerCase() : 'tax';
+    const rates = state.taxRates || [];
+    const entry = rates.find((x) => x.abbreviation === abbr);
+    if (entry && Number(entry.rate) > 0) return Number(entry.rate);
+    const sales = rates.find((x) => x.abbreviation === 'tax');
+    return sales ? Number(sales.rate) || 0 : 0;
+  }
+
+  /** Sum taxed line totals for rows (optionally excluding one), skipping rows without category/amount. */
+  function sumTaxedDollarsExceptRow(rows, excludeRow) {
+    let s = 0;
+    rows.forEach((row) => {
+      if (excludeRow && row === excludeRow) return;
+      const cat = row.querySelector('.detail-category');
+      if (!cat || !cat.value) return;
+      const u = getEffectiveLineAmount(row);
+      if (Number.isNaN(u) || u === 0) return;
+      const rate = getEffectiveTaxRatePercentForRow(row);
+      s = roundMoney2(s + taxedDollarsFromUntaxed(u, rate));
+    });
+    return s;
+  }
+
   function seedFirstLineWithTransactionTotal() {
     if (state.totalDollars == null) return;
     [...detailRowsContainer.querySelectorAll('.detail-row')].slice(1).forEach((r) => r.remove());
@@ -318,6 +427,8 @@
     if (amt) amt.value = Number(state.totalDollars).toFixed(2);
     if (qty) qty.value = '1';
     if (cat) cat.value = '';
+    const taxSel = first.querySelector('.detail-tax-type');
+    if (taxSel) taxSel.value = 'regular';
     const taxed = first.querySelector('.detail-amount-taxed');
     if (taxed) taxed.textContent = '$0.00';
   }
@@ -331,7 +442,23 @@
     return s;
   }
 
-  function syncAutoRemainder() {
+  /** Category / tax type from a row for presetting a new remainder line. */
+  function rowCategoryPresetFromRow(sourceRowEl) {
+    if (!sourceRowEl) return {};
+    const catSel = sourceRowEl.querySelector('.detail-category');
+    const taxSel = sourceRowEl.querySelector('.detail-tax-type');
+    const o = {};
+    if (catSel && catSel.value) o.presetCategory = catSel.value;
+    if (taxSel && taxSel.value) o.presetTaxType = taxSel.value;
+    return o;
+  }
+
+  /**
+   * @param {{ allowAppendRemainder?: boolean }} [options] - If allowAppendRemainder is false, do not add remainder rows
+   *   or mark an empty 2nd row as remainder (while typing amounts). Tab / blur paths use the default (append allowed).
+   */
+  function syncAutoRemainder(options) {
+    const allowAppend = !options || options.allowAppendRemainder !== false;
     if (syncingRemainder || state.step !== 3 || state.totalDollars == null) return;
     if (isSplitWorkbenchHidden()) return;
     const total = Number(state.totalDollars);
@@ -341,16 +468,16 @@
     const autoRow = detailRowsContainer.querySelector('.detail-row[data-auto-remainder="true"]');
 
     if (autoRow) {
-      const sumLocked = sumEffectiveAmountsExcludingRow(rows, autoRow);
-      const rem = roundMoney2(total - sumLocked);
+      const sumLocked = sumTaxedDollarsExceptRow(rows, autoRow);
+      const remTaxed = roundMoney2(total - sumLocked);
 
-      if (Math.abs(rem) < 0.005) {
+      if (Math.abs(remTaxed) < 0.005) {
         autoRow.remove();
         setMessage('');
         return;
       }
 
-      if (rem < -0.005) {
+      if (remTaxed < -0.005) {
         autoRow.remove();
         setMessage('Line amounts exceed the transaction total.', true);
         return;
@@ -362,29 +489,40 @@
         const amtEl = autoRow.querySelector('.detail-amount');
         const qEl = autoRow.querySelector('.detail-qty');
         if (qEl) qEl.value = '1';
-        if (amtEl) amtEl.value = rem.toFixed(2);
+        const rate = getEffectiveTaxRatePercentForRow(autoRow);
+        const remUntaxed = untaxedDollarsFromTaxed(remTaxed, rate);
+        if (amtEl) amtEl.value = remUntaxed.toFixed(2);
       } finally {
         syncingRemainder = false;
       }
       return;
     }
 
-    const eff1 = getEffectiveLineAmount(rows[0]);
-    const remAfterFirst = roundMoney2(total - eff1);
+    if (rows.length === 1) {
+      const taxed1 = taxedDollarsFromUntaxed(getEffectiveLineAmount(rows[0]), getEffectiveTaxRatePercentForRow(rows[0]));
+      const remTaxed = roundMoney2(total - taxed1);
+      if (Math.abs(remTaxed) < 0.005) {
+        setMessage('');
+        return;
+      }
+      if (remTaxed < -0.005) {
+        setMessage('Line amounts exceed the transaction total.', true);
+        return;
+      }
+    } else {
+      const sumTaxed = sumTaxedDollarsExceptRow(rows, null);
+      if (Math.abs(total - sumTaxed) < 0.005) {
+        setMessage('');
+        return;
+      }
+      if (sumTaxed > total + 0.005) {
+        setMessage('Line amounts exceed the transaction total.', true);
+        return;
+      }
+    }
 
-    if (Math.abs(remAfterFirst) < 0.005) {
+    if (!allowAppend) {
       setMessage('');
-      return;
-    }
-
-    if (remAfterFirst < -0.005) {
-      setMessage('First line amount exceeds the transaction total.', true);
-      return;
-    }
-
-    const sumAll = rows.reduce((acc, r) => roundMoney2(acc + getEffectiveLineAmount(r)), 0);
-    if (sumAll > total + 0.005) {
-      setMessage('Line amounts exceed the transaction total.', true);
       return;
     }
 
@@ -392,7 +530,15 @@
     syncingRemainder = true;
     try {
       if (rows.length === 1) {
-        appendDetailRow({ autoRemainder: true, initialAmount: remAfterFirst });
+        const taxed1 = taxedDollarsFromUntaxed(getEffectiveLineAmount(rows[0]), getEffectiveTaxRatePercentForRow(rows[0]));
+        const remTaxed = roundMoney2(total - taxed1);
+        const rate = getEffectiveTaxRatePercentForRow(rows[0]);
+        const remUntaxed = untaxedDollarsFromTaxed(remTaxed, rate);
+        appendDetailRow({
+          autoRemainder: true,
+          initialAmount: remUntaxed,
+          ...rowCategoryPresetFromRow(rows[0]),
+        });
         return;
       }
       const r2 = rows[1];
@@ -401,14 +547,35 @@
       const emptyCat = !cat || !cat.value;
       const emptyAmt = !amt || !amt.value.trim();
       if (emptyCat && emptyAmt) {
+        const taxed1 = taxedDollarsFromUntaxed(getEffectiveLineAmount(rows[0]), getEffectiveTaxRatePercentForRow(rows[0]));
+        const remTaxed = roundMoney2(total - taxed1);
+        const rate = getEffectiveTaxRatePercentForRow(rows[0]);
+        const remUntaxed = untaxedDollarsFromTaxed(remTaxed, rate);
         r2.dataset.autoRemainder = 'true';
-        if (amt) amt.value = remAfterFirst.toFixed(2);
+        if (amt) amt.value = remUntaxed.toFixed(2);
         const qEl = r2.querySelector('.detail-qty');
         if (qEl) qEl.value = '1';
+        const preset = rowCategoryPresetFromRow(rows[0]);
+        if (preset.presetCategory && cat) {
+          const match = Array.from(cat.options).some((o) => o.value === preset.presetCategory);
+          if (match) cat.value = preset.presetCategory;
+        }
+        const tax2 = r2.querySelector('.detail-tax-type');
+        if (preset.presetTaxType && tax2) {
+          tax2.value = preset.presetTaxType;
+        } else {
+          applyCatalogTaxTypeToRow(r2);
+        }
       } else {
-        const remRest = roundMoney2(total - sumAll);
-        if (remRest > 0.005) {
-          appendDetailRow({ autoRemainder: true, initialAmount: remRest });
+        const remTaxed = roundMoney2(total - sumTaxedDollarsExceptRow(rows, null));
+        if (remTaxed > 0.005) {
+          const rate = getEffectiveTaxRatePercentForRow(rows[rows.length - 1]);
+          const remUntaxed = untaxedDollarsFromTaxed(remTaxed, rate);
+          appendDetailRow({
+            autoRemainder: true,
+            initialAmount: remUntaxed,
+            ...rowCategoryPresetFromRow(rows[rows.length - 1]),
+          });
         }
       }
     } finally {
@@ -443,6 +610,8 @@
       }
     });
     (state.taxRates || []).forEach((t) => {
+      const r = Number(t.rate);
+      if (Number.isNaN(r) || r <= 0) return;
       parts.push(formatTaxRate(t.rate) + t.abbreviation);
     });
     const discRaw = inputDiscount && inputDiscount.value ? inputDiscount.value.trim() : '';
@@ -632,6 +801,8 @@
     if (opts.presetTaxType != null && opts.presetTaxType !== '') {
       const tt = row.querySelector('.detail-tax-type');
       if (tt) tt.value = opts.presetTaxType;
+    } else {
+      applyCatalogTaxTypeToRow(row);
     }
     const skipCatFocus = opts.autoFocusCategory === false;
     if (!autoRemainder && !skipCatFocus) {
@@ -669,8 +840,53 @@
     }
   }
 
+  function parseDetailRowQuantityInt(rowEl) {
+    const qtyInput = rowEl && rowEl.querySelector('.detail-qty');
+    const qRaw = qtyInput && qtyInput.value ? parseFloat(qtyInput.value) : 1;
+    if (Number.isNaN(qRaw) || qRaw <= 1) return 1;
+    return Math.floor(qRaw);
+  }
+
+  /**
+   * When qty &gt; 1, clone this line into N unit rows (same amount per row) and reset qty to 1 on the first.
+   * Clears auto-remainder on this row so quantity split works on remainder lines too.
+   */
+  function maybeExpandQuantityFromRow(rowEl) {
+    if (!rowEl || isSplitWorkbenchHidden() || state.step !== 3 || state.totalDollars == null) return false;
+    const qInt = parseDetailRowQuantityInt(rowEl);
+    if (qInt <= 1) return false;
+    if (rowEl.dataset.autoRemainder === 'true') {
+      delete rowEl.dataset.autoRemainder;
+    }
+    expandRowIntoUnitQuantityRows(rowEl, qInt);
+    syncAutoRemainder();
+    updateLiveDisplay();
+    const moveFocusAfterExpand = () => {
+      if (!focusRemainderOrLastEmptyCategory()) {
+        const firstNewRow = rowEl.nextElementSibling;
+        const cat = firstNewRow && firstNewRow.querySelector('.detail-category');
+        if (cat) cat.focus();
+      }
+    };
+    requestAnimationFrame(() => {
+      requestAnimationFrame(moveFocusAfterExpand);
+    });
+    return true;
+  }
+
+  /** Bottom-up: first row with a category set (typical “last line you used”). */
+  function getLastUsedCategoryNameFromDetailRows() {
+    const rows = [...detailRowsContainer.querySelectorAll('.detail-row')];
+    for (let i = rows.length - 1; i >= 0; i -= 1) {
+      const sel = rows[i].querySelector('.detail-category');
+      if (sel && sel.value) return sel.value;
+    }
+    return '';
+  }
+
   function addDetailRow() {
-    appendDetailRow({});
+    const cat = getLastUsedCategoryNameFromDetailRows();
+    appendDetailRow(cat ? { presetCategory: cat } : {});
   }
 
   function focusRemainderCategoryIfPresent() {
@@ -696,33 +912,99 @@
     return false;
   }
 
+  /**
+   * Last row only: ArrowDown adds a line with the same category, qty 1, amount = unpaid remainder; focuses amount (selected).
+   */
+  function handleDetailAmountArrowDown(e) {
+    if (e.key !== 'ArrowDown' || e.shiftKey || e.altKey || e.ctrlKey || e.metaKey) return false;
+    if (isSplitWorkbenchHidden() || state.step !== 3 || state.totalDollars == null) return false;
+    const rowEl = e.target.closest('.detail-row');
+    if (!rowEl) return false;
+    const rows = [...detailRowsContainer.querySelectorAll('.detail-row')];
+    const idx = rows.indexOf(rowEl);
+    if (idx < 0 || idx < rows.length - 1) return false;
+
+    const total = Number(state.totalDollars);
+    const sumTaxed = sumTaxedDollarsExceptRow(rows, null);
+    const remTaxed = roundMoney2(total - sumTaxed);
+    if (remTaxed <= 0.005) {
+      if (remTaxed < -0.005) {
+        setMessage('Line amounts exceed the transaction total.', true);
+      }
+      return false;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const catSel = rowEl.querySelector('.detail-category');
+    const taxSel = rowEl.querySelector('.detail-tax-type');
+    const catVal = catSel ? catSel.value : '';
+    const taxVal = taxSel ? taxSel.value : 'regular';
+    const rate = getEffectiveTaxRatePercentForRow(rowEl);
+    const remUntaxed = untaxedDollarsFromTaxed(remTaxed, rate);
+
+    const newRow = appendDetailRow({
+      insertAfter: rowEl,
+      presetCategory: catVal,
+      presetTaxType: taxVal,
+      initialAmount: remUntaxed,
+      autoFocusCategory: false,
+    });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const amtEl = newRow.querySelector('.detail-amount');
+        if (amtEl) {
+          amtEl.focus();
+          amtEl.select();
+        }
+        syncAutoRemainder();
+        updateLiveDisplay();
+      });
+    });
+    return true;
+  }
+
   function onDetailAmountKeydown(e) {
     if (e.key !== 'Tab' || e.shiftKey) return;
     if (!e.target.classList.contains('detail-amount')) return;
     if (isSplitWorkbenchHidden() || state.step !== 3 || state.totalDollars == null) return;
 
     const rowEl = e.target.closest('.detail-row');
-    const onAutoRemainderRow = rowEl && rowEl.dataset.autoRemainder === 'true';
+    if (!rowEl) return;
+
+    const qInt = parseDetailRowQuantityInt(rowEl);
+    if (qInt > 1) {
+      e.preventDefault();
+      e.stopPropagation();
+      requestAnimationFrame(() => {
+        maybeExpandQuantityFromRow(rowEl);
+      });
+      return;
+    }
+
+    const onAutoRemainderRow = rowEl.dataset.autoRemainder === 'true';
 
     // Must run before syncAutoRemainder(), which would overwrite the auto row amount with total − line1 only.
     if (onAutoRemainderRow) {
       const rows = [...detailRowsContainer.querySelectorAll('.detail-row')];
       const total = Number(state.totalDollars);
-      const sumOthers = sumEffectiveAmountsExcludingRow(rows, rowEl);
-      const effCur = getEffectiveLineAmount(rowEl);
-      const remNew = roundMoney2(total - sumOthers - effCur);
+      const sumTaxed = sumTaxedDollarsExceptRow(rows, null);
+      const remTaxed = roundMoney2(total - sumTaxed);
+      const rate = getEffectiveTaxRatePercentForRow(rowEl);
+      const remUntaxed = remTaxed > 0.005 ? untaxedDollarsFromTaxed(remTaxed, rate) : 0;
 
       e.preventDefault();
       e.stopPropagation();
       requestAnimationFrame(() => {
         rowEl.removeAttribute('data-auto-remainder');
-        if (remNew > 0.005) {
-          appendDetailRow({ autoRemainder: true, initialAmount: remNew });
+        if (remTaxed > 0.005) {
+          appendDetailRow({ autoRemainder: true, initialAmount: remUntaxed, ...rowCategoryPresetFromRow(rowEl) });
           const newAuto = detailRowsContainer.querySelector('.detail-row[data-auto-remainder="true"]');
           const cat = newAuto && newAuto.querySelector('.detail-category');
           if (cat) cat.focus();
         } else {
-          if (remNew < -0.005) {
+          if (remTaxed < -0.005) {
             setMessage('Line amounts exceed the transaction total.', true);
           } else {
             setMessage('');
@@ -736,43 +1018,20 @@
       return;
     }
 
-    const qtyInput = rowEl.querySelector('.detail-qty');
-    const qRaw = qtyInput && qtyInput.value ? parseFloat(qtyInput.value) : 1;
-    const qInt = Number.isNaN(qRaw) || qRaw <= 1 ? 1 : Math.floor(qRaw);
-    if (qInt > 1) {
-      e.preventDefault();
-      e.stopPropagation();
-      requestAnimationFrame(() => {
-        expandRowIntoUnitQuantityRows(rowEl, qInt);
-        syncAutoRemainder();
-        updateLiveDisplay();
-        if (!focusRemainderOrLastEmptyCategory()) {
-          const firstNewRow = rowEl.nextElementSibling;
-          const cat = firstNewRow && firstNewRow.querySelector('.detail-category');
-          if (cat) cat.focus();
-        }
-      });
-      return;
-    }
-
-    syncAutoRemainder();
-    updateLiveDisplay();
-
-    const rows = [...detailRowsContainer.querySelectorAll('.detail-row')];
-    if (rows.length === 0) return;
-    const eff1 = getEffectiveLineAmount(rows[0]);
-    const rem = roundMoney2(Number(state.totalDollars) - eff1);
-
-    if (rem > 0.005) {
-      e.preventDefault();
-      e.stopPropagation();
-      requestAnimationFrame(() => {
-        if (!focusRemainderCategoryIfPresent()) {
-          syncAutoRemainder();
-          focusRemainderCategoryIfPresent();
-        }
-      });
-    }
+    e.preventDefault();
+    e.stopPropagation();
+    requestAnimationFrame(() => {
+      syncAutoRemainder();
+      updateLiveDisplay();
+      const next = rowEl.nextElementSibling;
+      if (next && next.classList.contains('detail-row')) {
+        const cat = next.querySelector('.detail-category');
+        if (cat) cat.focus();
+        return;
+      }
+      const tax = rowEl.querySelector('.detail-tax-type');
+      if (tax) tax.focus();
+    });
   }
 
   function showStep(n) {
@@ -822,7 +1081,7 @@
   const categoryCodesEl = document.getElementById('category-codes');
 
   async function fetchCatalogs() {
-    const res = await fetch('/api/catalogs');
+    const res = await fetch('/api/catalogs', { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load catalogs');
     state.catalogs = await res.json();
     const fromApi = state.catalogs.taxRates || [];
@@ -868,6 +1127,7 @@
       }
     }
     populateCategorySelects();
+    detailRowsContainer.querySelectorAll('.detail-row').forEach((row) => applyCatalogTaxTypeToRow(row));
     renderTaxRows();
   }
 
@@ -878,6 +1138,37 @@
   }
 
   let previewDebounceTimer = null;
+
+  /** Per-row taxed + summary from DOM (matches server tax rounding; avoids preview line-order bugs). */
+  function updateTaxedColumnAndSummaryFromDom() {
+    syncGroceryLiquorRatesFromSales();
+    const detailRowEls = detailRowsContainer.querySelectorAll('.detail-row');
+    let sub = 0;
+    let taxSum = 0;
+    detailRowEls.forEach((rowEl) => {
+      const taxedEl = rowEl.querySelector('.detail-amount-taxed');
+      const cat = rowEl.querySelector('.detail-category');
+      if (!cat || !cat.value) {
+        if (taxedEl) taxedEl.textContent = '$0.00';
+        return;
+      }
+      const u = getEffectiveLineAmount(rowEl);
+      if (Number.isNaN(u) || u === 0) {
+        if (taxedEl) taxedEl.textContent = '$0.00';
+        return;
+      }
+      const rate = getEffectiveTaxRatePercentForRow(rowEl);
+      const t = taxedDollarsFromUntaxed(u, rate);
+      if (taxedEl) taxedEl.textContent = formatMoney(t);
+      sub = roundMoney2(sub + u);
+      taxSum = roundMoney2(taxSum + (t - u));
+    });
+    const grand = roundMoney2(sub + taxSum);
+    if (summarySubtotal) summarySubtotal.textContent = formatMoney(sub);
+    if (summarySalesTax) summarySalesTax.textContent = formatMoney(taxSum);
+    if (summaryTotalEl) summaryTotalEl.textContent = formatMoney(grand);
+  }
+
   async function fetchPreview() {
     syncHeaderStateFromDom();
     const total = state.totalDollars;
@@ -911,39 +1202,12 @@
     }
     if (data.error) {
       liveDisplay.innerHTML = '<p class="preview-error">' + escapeHtml(data.error) + '</p>';
-      resetSummaryDisplay();
+      updateTaxedColumnAndSummaryFromDom();
       return;
     }
 
     liveDisplay.innerHTML = '';
-
-    let sub = 0;
-    let taxSum = 0;
-    const rows = data.lines || [];
-    rows.forEach((row) => {
-      const b = parseFloat(row.base);
-      const a = parseFloat(row.amount);
-      if (!Number.isNaN(b)) sub += b;
-      if (!Number.isNaN(a) && !Number.isNaN(b)) taxSum += a - b;
-    });
-
-    if (summarySubtotal) summarySubtotal.textContent = formatMoney(sub);
-    if (summarySalesTax) summarySalesTax.textContent = formatMoney(taxSum);
-    if (summaryTotalEl) summaryTotalEl.textContent = formatMoney(data.totalDollars);
-
-    const detailRowEls = detailRowsContainer.querySelectorAll('.detail-row');
-    rows.forEach((row, i) => {
-      const el = detailRowEls[i];
-      if (!el) return;
-      const taxed = el.querySelector('.detail-amount-taxed');
-      if (!taxed) return;
-      const a = parseFloat(row.amount);
-      taxed.textContent = Number.isNaN(a) ? '$0.00' : formatMoney(a);
-    });
-    for (let j = rows.length; j < detailRowEls.length; j += 1) {
-      const taxed = detailRowEls[j].querySelector('.detail-amount-taxed');
-      if (taxed) taxed.textContent = '$0.00';
-    }
+    updateTaxedColumnAndSummaryFromDom();
   }
 
   function updateConfirmation() {
@@ -971,6 +1235,7 @@
       renderPreview(null);
       return;
     }
+    updateTaxedColumnAndSummaryFromDom();
     clearTimeout(previewDebounceTimer);
     previewDebounceTimer = setTimeout(fetchPreview, 180);
   }
@@ -1104,6 +1369,8 @@
       if (catInput) catInput.value = '';
       if (amt) amt.value = '';
       if (qty) qty.value = '1';
+      const taxSel = first.querySelector('.detail-tax-type');
+      if (taxSel) taxSel.value = 'regular';
       const taxed = first.querySelector('.detail-amount-taxed');
       if (taxed) taxed.textContent = '$0.00';
     }
@@ -1115,7 +1382,7 @@
     const row = t.closest('.detail-row');
     const first = detailRowsContainer.querySelector('.detail-row');
     if (row === first && (t.classList.contains('detail-amount') || t.classList.contains('detail-qty'))) {
-      syncAutoRemainder();
+      syncAutoRemainder({ allowAppendRemainder: false });
     }
     updateLiveDisplay();
   });
@@ -1132,8 +1399,12 @@
         categoryPrefixBySelect.delete(e.target);
         ynabcliLogCategory('category change: buffer cleared (mouse/UI)', { id: e.target.id });
       }
+      const row = e.target.closest('.detail-row');
+      if (row) applyCatalogTaxTypeToRow(row);
       updateLiveDisplay();
     } else if (e.target.classList.contains('detail-tax-type')) {
+      updateLiveDisplay();
+    } else if (e.target.classList.contains('detail-qty')) {
       updateLiveDisplay();
     }
   });
@@ -1158,8 +1429,10 @@
         const rows = [...detailRowsContainer.querySelectorAll('.detail-row')];
         const total = Number(state.totalDollars);
         if (state.step === 3 && total != null && !Number.isNaN(total)) {
-          const sumOthers = sumEffectiveAmountsExcludingRow(rows, row);
-          const expected = roundMoney2(total - sumOthers);
+          const sumTaxedOthers = sumTaxedDollarsExceptRow(rows, row);
+          const remTaxed = roundMoney2(total - sumTaxedOthers);
+          const rate = getEffectiveTaxRatePercentForRow(row);
+          const expected = untaxedDollarsFromTaxed(remTaxed, rate);
           const actual = getEffectiveLineAmount(row);
           if (Math.abs(actual - expected) >= 0.005) {
             delete row.dataset.autoRemainder;
@@ -1171,6 +1444,21 @@
     }
   });
   detailRowsContainer.addEventListener('keydown', (e) => {
+    if (e.target.classList.contains('detail-qty')) {
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        const el = e.target;
+        let cur = parseInt(String(el.value).trim(), 10);
+        if (Number.isNaN(cur) || cur < 1) cur = 1;
+        const min = el.hasAttribute('min') ? parseInt(el.getAttribute('min'), 10) : 1;
+        const step = el.hasAttribute('step') ? parseFloat(el.getAttribute('step')) || 1 : 1;
+        let next = e.key === 'ArrowUp' ? cur + step : cur - step;
+        if (next < min) next = min;
+        el.value = String(Math.floor(next));
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        return;
+      }
+    }
     if (e.target.classList.contains('detail-category')) {
       const sel = e.target;
       if (e.key === 'Escape') {
@@ -1240,6 +1528,11 @@
           key: e.key,
           isCategoryPrefixKey: isCategoryPrefixKey(e.key),
         });
+      }
+    }
+    if (e.target.classList.contains('detail-amount')) {
+      if (e.key === 'ArrowDown' && handleDetailAmountArrowDown(e)) {
+        return;
       }
     }
     if (

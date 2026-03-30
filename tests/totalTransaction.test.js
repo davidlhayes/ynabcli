@@ -14,8 +14,9 @@
 
       expect(result).toEqual([
         { amount: 900, amounts: [450, 450] },
-        { amount: 1800, amounts: [900, 900] }
+        { amount: 2100, amounts: [900, 900, 300] }
       ]);
+      expect(result.reduce((a, tx) => a + tx.amount, 0)).toBe(total);
     });
 
     test('should apply gift card correctly', () => {
@@ -31,8 +32,9 @@
 
       expect(result).toEqual([
         { amount: 900, amounts: [450, 450] },
-        { amount: 1800, amounts: [900, 900, 300] }
+        { amount: 2100, amounts: [900, 900, 300] }
       ]);
+      expect(result.reduce((a, tx) => a + tx.amount, 0)).toBe(total);
     });
 
     test('should apply both discount and gift card correctly', () => {
@@ -47,9 +49,10 @@
       const result = totalTransactionTest(taxedTransaction, total, discount, giftCard);
 
       expect(result).toEqual([
-        { amount: 810, amounts: [405, 405] },
-        { amount: 1620, amounts: [810, 810, 270] }
+        { amount: 820, amounts: [410, 410] },
+        { amount: 2180, amounts: [810, 810, 560] }
       ]);
+      expect(result.reduce((a, tx) => a + tx.amount, 0)).toBe(total);
     });
 
     test('should handle zero discount and gift card correctly', () => {
@@ -67,5 +70,6 @@
         { amount: 1000, amounts: [500, 500] },
         { amount: 2000, amounts: [1000, 1000] }
       ]);
+      expect(result.reduce((a, tx) => a + tx.amount, 0)).toBe(total);
     });
   });

@@ -8,6 +8,7 @@ const getSplitTransaction = require('./lib/getSplitTransaction');
 const indexTransaction = require('./lib/indexTransaction');
 const taxTransaction = require('./lib/taxTransaction');
 const reCategorizeTransaction = require('./lib/reCategorizeTransaction');
+const indexTransactionOrdered = require('./lib/indexTransactionOrdered');
 const totalTransaction = require('./lib/totalTransaction');
 const getNewTransactionDetails = require('./lib/getNewTransactionDetails');
 const updateYnab = require('./lib/updateYnab');
@@ -97,13 +98,17 @@ app.get('/api/lookup', async (req, res) => {
 // GET /api/catalogs
 app.get('/api/catalogs', (req, res) => {
   try {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.set('Pragma', 'no-cache');
     const { categories, payees, accounts, taxRates } = getDictionaries();
     return res.json({
-      categories: categories.map((c) => ({
-        id: c.id,
-        name: c.name,
-        abbreviation: c.abbreviation,
-      })).filter((c) => c.abbreviation),
+      categories: categories
+        .map((c) => {
+          const row = { id: c.id, name: c.name, abbreviation: c.abbreviation };
+          if (c.taxType) row.taxType = c.taxType;
+          return row;
+        })
+        .filter((c) => c.abbreviation),
       payees: payees.map((p) => ({ id: p.id, name: p.name })),
       accounts: accounts.map((a) => ({ id: a.id, name: a.name })),
       taxRates: (taxRates || []).map((t) => ({ name: t.name, abbreviation: t.abbreviation, rate: Number(t.rate) })),
@@ -156,13 +161,18 @@ app.post('/api/preview', (req, res) => {
       splitTransaction.total = totalMilli;
     }
     const { total, discount, giftCard, taxes } = splitTransaction;
-    let indexed = indexTransaction(splitTransaction, categories);
-    if (typeof indexed === 'string') {
-      return res.json({ error: indexed });
+    const taxAbbrevs = (taxes || []).map((t) => t.abbreviation);
+    let indexed = indexTransactionOrdered(splitTransaction.result || [], categories, taxAbbrevs);
+    if (indexed.length === 0) {
+      const fallback = indexTransaction(splitTransaction, categories);
+      if (typeof fallback === 'string') {
+        return res.json({ error: fallback });
+      }
+      indexed = fallback;
     }
     const taxed = taxTransaction(indexed, categories, taxes);
-    const reCategorized = reCategorizeTransaction(taxed, categories);
-    const totaled = totalTransaction(reCategorized, total, discount, giftCard);
+    // Preview: skip mergeCategory so line order and per-row tax match the UI; update path still merges.
+    const totaled = totalTransaction(taxed, total, discount, giftCard);
     const lines = buildPreviewLines(totaled);
     return res.json({
       lines,
@@ -208,9 +218,14 @@ app.post('/api/update', async (req, res) => {
     }
 
     const { total, discount, giftCard, taxes } = splitTransaction;
-    let indexed = indexTransaction(splitTransaction, categories);
-    if (typeof indexed === 'string') {
-      return res.status(400).json({ error: indexed });
+    const taxAbbrevs = (taxes || []).map((t) => t.abbreviation);
+    let indexed = indexTransactionOrdered(splitTransaction.result || [], categories, taxAbbrevs);
+    if (indexed.length === 0) {
+      const fallback = indexTransaction(splitTransaction, categories);
+      if (typeof fallback === 'string') {
+        return res.status(400).json({ error: fallback });
+      }
+      indexed = fallback;
     }
     const taxed = taxTransaction(indexed, categories, taxes);
     const reCategorized = reCategorizeTransaction(taxed, categories);
